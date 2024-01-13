@@ -1,0 +1,124 @@
+.HouseProduct {
+  margin-top: 20px;
+  padding: 22px;
+
+  &_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+
+    &_next {
+      border-radius: 8px;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      padding: 8px 10px;
+    }
+
+    &_preiw {
+      background: #222;
+      color: #ececec;
+      border-radius: 8px;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      padding: 8px 10px;
+    }
+
+    hr {
+      width: 75%;
+    }
+
+    &_keep {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+  }
+
+  &_namesPro {
+    width: 291px;
+    height: 326px;
+    margin-top: 20px;
+    margin-left: 10px;
+    //background: #E5E5E5;
+    display: grid;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+
+    &_full {
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .HouseProduct {
+    &_header {
+      display: flex;
+      align-items: center;
+      justify-content: left;
+
+      hr {
+        display: none;
+      }
+
+      &_keep {
+        display: none;
+      }
+    }
+  }
+
+
+}
+
+@media screen and (max-width: 745px) {
+  .HouseProduct {
+    &_header {
+      display: flex;
+      align-items: center;
+      justify-content: left;
+
+      hr {
+        display: none;
+      }
+
+      &_keep {
+        display: none;
+      }
+    }
+  }
+
+
+}
+
+@media screen and (max-width: 1140px) {
+  .HouseProduct {
+    &_header {
+      display: flex;
+      align-items: center;
+      justify-content: left;
+
+      hr {
+        display: none;
+      }
+
+      &_keep {
+        display: none;
+      }
+    }
+  }
+
+}

@@ -1,0 +1,29 @@
+.KitchenProduct{
+  margin-top: 20px;
+  padding: 22px;
+
+  &_all{
+    width: 104.01px;
+    height: auto;
+    &_pro{
+      width: 104.01px;
+      height: 116.61px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 12px;
+      padding:0 10px;
+      background: #EEEEF0;
+    }
+    &_text{
+      font-size: 11.333px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+      justify-content: center;
+    }
+  }
+}

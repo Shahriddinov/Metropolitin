@@ -1,0 +1,18 @@
+.FoodProduct{
+  margin-top: 20px;
+  padding: 22px;
+  &_foods{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    font-size: 11.333px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    background: #EFEFEF;
+    padding: 10px 0;
+    gap: 15px;
+    border-radius: 12px;
+  }
+}

@@ -1,0 +1,16 @@
+.menus{
+  display: flex;
+  margin-top: 15px;
+  gap: 15px;
+  &_buttons{
+    padding: 10px;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 600;
+    border-radius: 5px;
+    line-height: normal;
+    background: #EEEEEE;
+    //opacity: 0.15;
+    color: #222;
+  }
+}
