@@ -1,0 +1,64 @@
+@import "assets/styles/ui";
+.finalTest{
+  &_head {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 400;
+    color: #8D8484;
+
+    &_homes {
+      border: 1px solid black;
+      background: white;
+      padding: 5px 12px;
+      position: relative;
+    }
+  }
+  &_lists{
+    width: 100%;
+    margin-top: 40px;
+    height: 80vh;
+    overflow-y: scroll;
+   &_boxTest{
+     width: 100%;
+
+
+     &_testTitle{
+       font-weight: 400;
+       font-size: 20px;
+       line-height: 3;
+     }
+     &_checks{
+       display: block;
+
+       align-items: center;
+
+       &_TestLabel{
+         font-size: 14px;
+         font-weight: 600;
+         color: #727785;
+         display: flex;
+         gap: 10px;
+         margin-top: 10px;
+
+       }
+       &_TestInput{
+       }
+
+     }
+   }
+    &_TestButton{
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      padding: 10px 30px;
+      border: none;
+      background: $color-blue;
+      color: white;
+    }
+  }
+}

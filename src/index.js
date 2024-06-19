@@ -1,27 +1,19 @@
-import React, {Suspense} from 'react';
-import ReactDOM, {createRoot} from 'react-dom/client';
-// import App from './App';
-import "../src/assets/style/global.scss";
-import "../src/assets/style/Header.scss";
-import "../src/assets/style/Footer.scss";   
-import Routes from "./router"
-import Provider from "react-redux/es/components/Provider";
+import "react-app-polyfill/ie9";
+import "react-app-polyfill/ie11";
 
-import "./index.css";
+import React, { Suspense } from "react";
+import { createRoot } from "react-dom/client";
 
+import Routes from "./routes";
 
+import "./assets/styles/header.scss";
+import "./assets/styles/footer.scss";
 
 const container = document.getElementById("root");
 const root = createRoot(container);
 
 root.render(
-    // <Provider {...{ store }}>
-        <Suspense fallback="">
-            {/*<I18nextProvider i18n={i18n()}>*/}
-                <Routes />
-            {/*</I18nextProvider>*/}
-        </Suspense>
-    // </Provider>
-
-
-)
+	<Suspense fallback="">
+		<Routes />
+	</Suspense>
+);

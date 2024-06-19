@@ -1,0 +1,23 @@
+// src/components/Sidebar.scss
+.sidebar {
+  width: 200px;
+  height: 93vh;
+  background-color: #0a3d62;
+  color: white;
+  padding-top: 20px;
+  padding-left: 10px;
+
+  &_Sul {
+    list-style: none;
+    padding: 0;
+
+    &_Sli {
+      margin: 15px 0;
+      cursor: pointer;
+
+      &:hover {
+        color: #82ccdd;
+      }
+    }
+  }
+}

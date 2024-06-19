@@ -1,0 +1,58 @@
+@import "assets/styles/ui";
+
+.personal {
+  &_head {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 400;
+    color: #8D8484;
+
+    &_homes {
+      border: 1px solid black;
+      background: white;
+      padding: 5px 12px;
+      position: relative;
+    }
+  }
+
+  &_infos {
+    font-weight: 400;
+    font-size: 18px;
+    margin: 0 auto;
+    color: #727785;
+    margin-top: 40px;
+    width: 80%;
+
+    &_InfoCard {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+
+      &_Photos {
+        width: 30%;
+        height: 300px;
+        margin-top: 40px;
+      }
+
+      &_shows {
+        width: 65%;
+        height: 300px;
+        display: flex;
+        background: white;
+        padding: 15px;
+        justify-content: center;
+
+        &_self {
+          width: 50%;
+
+          &_NTitle {
+            margin: 30px 0;
+          }
+        }
+      }
+    }
+  }
+}

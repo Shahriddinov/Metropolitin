@@ -1,0 +1,260 @@
+@import "./ui";
+
+.flexs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  &_logo {
+    width: 62px;
+    height: 60px;
+  }
+
+  &_navbar {
+    display: flex;
+    gap: 10px;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 600;
+
+    &_nav {
+      text-decoration: none;
+      list-style: none;
+      cursor: pointer;
+      position: relative;
+      display: inline-block;
+      padding: 10px 20px;
+      color: #000;
+      font-size: 16px;
+      text-transform: uppercase;
+      transition: color 0.3s ease-out, transform 0.3s ease-out;
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 2px;
+        width: 100%;
+        background-color: #000;
+        transform: scaleX(0);
+        transform-origin: bottom right;
+        transition: transform 0.3s ease-out;
+      }
+
+      &:hover {
+        color: $color-blue;
+        transform: translateY(-0.5px);
+
+        &::after {
+          transform: scaleX(1);
+          transform-origin: bottom left;
+        }
+      }
+    }
+  }
+
+  &_burger {
+    display: none;
+  }
+
+  &_menu {
+    display: none;
+  }
+
+  @media (max-width: 1150px){
+    overflow: hidden;
+    &_navbar {
+      display: none;
+
+    }
+    &_about {
+      width: 100%;
+    }
+    &_burger {
+      display: block;
+      cursor: pointer;
+      font-size: 24px;
+      color: #000;
+    }
+  }
+  @media (max-width: 992px) {
+    overflow: hidden;
+    &_navbar {
+      display: none;
+
+    }
+    &_about {
+      width: 100%;
+    }
+    &_burger {
+      display: block;
+      cursor: pointer;
+      font-size: 24px;
+      color: #000;
+    }
+
+    &_menu {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 16%;
+
+      right: 0;
+      justify-content: center;
+      width: 30%;
+      background: $color-layout;
+
+      z-index: 1000;
+
+
+    }
+    &_navbar {
+
+      &_nav {
+        width: 30%;
+
+        padding: 15px 20px;
+        text-align: left;
+        color: #ececec;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    overflow: hidden;
+    &_navbar {
+      display: none;
+
+    }
+    &_about {
+      width: 100%;
+    }
+    &_burger {
+      display: block;
+      cursor: pointer;
+      font-size: 24px;
+      color: #000;
+    }
+
+    &_menu {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 16%;
+
+      right: 0;
+      justify-content: center;
+      width: 30%;
+      background: $color-layout;
+
+      z-index: 1000;
+
+
+    }
+    &_navbar {
+
+      &_nav {
+        width: 30%;
+
+        padding: 15px 20px;
+        text-align: left;
+        color: #ececec;
+      }
+    }
+  }
+
+  @media (max-width: 576px) {
+    overflow: hidden;
+    &_navbar {
+      display: none;
+
+    }
+    &_about {
+      width: 100%;
+    }
+    &_burger {
+      display: block;
+      cursor: pointer;
+      font-size: 24px;
+      color: #000;
+    }
+
+    &_menu {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 16%;
+
+      right: 0;
+      justify-content: center;
+      width: 30%;
+      background: $color-layout;
+
+      z-index: 1000;
+
+
+    }
+    &_navbar {
+
+      &_nav {
+        width: 30%;
+
+        padding: 15px 20px;
+        text-align: left;
+        color: #ececec;
+      }
+    }
+  }
+
+  @media (max-width: 460px) {
+    overflow: hidden;
+    &_navbar {
+      display: none;
+
+    }
+    &_about {
+      width: 100%;
+    }
+    &_burger {
+      display: block;
+      cursor: pointer;
+      font-size: 24px;
+      color: #000;
+    }
+
+    &_menu {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 16%;
+
+      right: 0;
+      justify-content: center;
+      width: 30%;
+      background: $color-layout;
+
+      z-index: 1000;
+
+
+    }
+    &_navbar {
+
+      &_nav {
+        width: 30%;
+
+        padding: 15px 20px;
+        text-align: left;
+        color: #ececec;
+      }
+    }
+  }
+}

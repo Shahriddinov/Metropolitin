@@ -1,0 +1,66 @@
+@import "../../assets/styles/ui";
+
+.about {
+  width: 100%;
+  height: 460px;
+  background: #F5F5F5;
+  background-image: url("../../assets/images/hero.png");
+  background-repeat: no-repeat;
+  object-fit: cover;
+  background-position: top;
+  background-size: contain;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+
+  &_min {
+    width: 1000px;
+
+    &_title {
+      width: 80%;
+      font-weight: 600;
+      font-size: 30px;
+      line-height: 48px;
+      color: #ececec;
+    }
+  }
+
+  &_containers {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    &_boxs {
+      width: 40%;
+
+      &_spans {
+        font-weight: 600;
+        font-size: 26px;
+        line-height: 36px;
+        color: $color-green;
+      }
+
+      &_ps {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 30px;
+        margin-top: 30px;
+      }
+    }
+
+    &_boxImg {
+      width: 60%;
+
+      &_imgAbout {
+        width: 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        object-fit: fill;
+
+      }
+    }
+  }
+}
