@@ -1,7 +1,7 @@
 import React from 'react';
-import "./classSchedule.scss"
+import "./teacherSchedule.scss"
 import {Link} from "react-router-dom";
-const ClassSchedule = () => {
+const TeacherSchedule = () => {
 
     const data = [
         { id: 1, name: 'Ali', age: 25, city: 'Toshkent', class: 'texnika', help:'texnik yordam', science:"math" },
@@ -18,7 +18,7 @@ const ClassSchedule = () => {
                   <div className="schedule_tables_class">
                       <divf>Dars jadvali</divf>
                       <div className="schedule_tables_class_weeks">Haftalik</div>
-                     <Link style={{textDecoration:"none", color:"#8D8484"}} to="/about">
+                     <Link style={{textDecoration:"none", color:"#8D8484"}} to="/teacher/about">
                          <div className="schedule_tables_class_weeks">Bosh saxifaga qaytish</div>
                      </Link>
                   </div>
@@ -54,4 +54,4 @@ const ClassSchedule = () => {
     );
 };
 
-export default ClassSchedule;
+export default TeacherSchedule;

@@ -1,0 +1,47 @@
+@import "assets/styles/ui";
+.science{
+  width: 80%;
+  height: 95vh;
+
+  margin: 0 auto;
+  background: white;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  &_class{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 400;
+    color: #8D8484;
+    &_weeks{
+      border: 1px solid black;
+      background: white;
+      padding: 5px 12px;
+      position: relative;
+
+    }
+
+
+  }
+  &_liness{
+    width: 100%;
+
+    border-collapse: collapse;
+    margin-top: 40px;
+    &_th, &_items {
+      padding: 8px 12px;
+      border: 1px solid #727785;
+      cursor: pointer;
+    }
+
+    &_th {
+      background-color: #f4f4f4;
+    }
+  }
+}
+
+

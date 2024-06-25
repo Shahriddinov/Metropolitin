@@ -1,0 +1,42 @@
+@import "assets/styles/ui";
+
+.schedule {
+  width: 100%;
+  height: 100vh;
+  //align-items: ;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-image: url("../../../../assets/images/class.jpg");
+
+  &_tables {
+    width: 80%;
+    height: 95vh;
+
+    margin: 0 auto;
+    background: white;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+    &_class {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 18px;
+      font-weight: 400;
+      color: #8D8484;
+      &_weeks{
+        border: 1px solid black;
+        background: white;
+        padding: 5px 12px;
+      }
+
+    }
+
+  }
+}
+
+

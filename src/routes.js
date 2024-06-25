@@ -18,6 +18,11 @@ const StudyGuide = lazy(() => import("./pages/Library/component/StudyGuide/Study
 const FinalTest = lazy(() => import("./pages/FinalTest/FinalTest"));
 
 
+const TeacherAbout = lazy(() => import("././pages/TeacherAdmin/components/TeacherAbout/TeacherAbout"));
+const TeacherSchedule = lazy(() => import("././pages/TeacherAdmin/components/TeacherSchedule/TeacherSchedule"));
+const TeacherScience = lazy(() => import("././pages/TeacherAdmin/components/TeacherScience/TeacherScience"));
+
+
 const AdminHome = lazy(() => import("./pages/Admin/component/Home/Home"));
 const AddTeacher = lazy(() => import("./pages/Admin/component/AddTeacher/AddTeacher"));
 const AddGroup = lazy(() => import("./pages/Admin/component/AddGroup/AddGroup"));
@@ -25,6 +30,7 @@ const AddStudent = lazy(() => import("./pages/Admin/component/AddStudent/AddStud
 const AddScience = lazy(() => import("./pages/Admin/component/AddScience/AddScience"));
 const AddLibrary = lazy(() => import("./pages/Admin/component/AddLibrary/AddLibrary"));
 const AddDocuments = lazy(() => import("./pages/Admin/component/AddDocuments/AddDocuments"));
+
 
 const routes = [
 	{ path: "about", element: About },
@@ -36,6 +42,12 @@ const routes = [
 	{ path: "library/guide", element: StudyGuide },
 	{ path: "test", element: FinalTest },
 	{ path: "", element: Login },
+
+
+	{ path: "teacher/about", element: TeacherAbout },
+	{ path: "teacher/schedule", element: TeacherSchedule },
+	{ path: "teacher/science", element: TeacherScience },
+
 
 
 	{ path: "admin/home", element: AdminHome },
