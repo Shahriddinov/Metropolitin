@@ -16,17 +16,17 @@ const ModalGroup = ({ show, handleClose, handleSubmit, handleChange, formData })
                         <div className="form-row">
                             <div className="form-group">
                                 <label>Guruh nomi</label>
-                                <input type="text" name="group" value={formData.group} onChange={handleChange} required />
+                                <input type="text" name="name" value={formData.name} onChange={handleChange} required />
                             </div>
                             <div className="form-group">
                                 <label>Malaka oshirish uchun soat</label>
-                                <input type="text" name="exsperiense" value={formData.exsperiense} onChange={handleChange} required />
+                                <input type="text" name="training_hour" value={formData.training_hour} onChange={handleChange} required />
                             </div>
                         </div>
                         <div className="form-row">
                             <div className="form-group">
                                 <label>O'quv yili</label>
-                                <input type="text" name="yearId" value={formData.yearId} onChange={handleChange} required />
+                                <input type="date" name="study_period" placeholder="YYYY-MM-DD" value={formData.study_period} onChange={handleChange} required />
                             </div>
 
                         </div>

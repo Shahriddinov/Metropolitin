@@ -1,26 +1,38 @@
-import React from 'react';
-import "./homework.scss"
-import {Link} from "react-router-dom";
+import React, { useEffect } from 'react';
+import './homework.scss';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTask } from '../../redux/getHomeworkSlice/getHomeworkSlice';
+import { getAllScience } from '../../redux/getScienceSlice/getScienceSlice';
+// Import the PDF icon
+import { FaFilePdf } from 'react-icons/fa'; // Using FontAwesome for the PDF icon
 
 const Homework = () => {
-    const data = [
-        {id: 1, science: 'Metropoliten vagonlarning elektr jihozlari', homework: 'Vazifa_1.docx', day: '29.03.2024', file: 'Vazifa_2.pdf', download:'Yuklang 1-2 topshiriqlarni'},
-        {id: 2, science: 'Metropoliten vagonlarning elektr jihozlari', homework: 'Vazifa_1.docx', day: '29.03.2024', file: 'Vazifa_2.pdf', download:'Yuklang 1-2 topshiriqlarni'},
-        {id: 3, science: 'Metropoliten vagonlarning elektr jihozlari', homework: 'Vazifa_1.docx', day: '29.03.2024', file: 'Vazifa_2.pdf', download:'Yuklang 1-2 topshiriqlarni'},
-        {id: 4, science: 'Metropoliten vagonlarning elektr jihozlari', homework: 'Vazifa_1.docx', day: '29.03.2024', file: 'Vazifa_2.pdf', download:'Yuklang 1-2 topshiriqlarni'},
-        {id: 5, science: 'Metropoliten vagonlarning elektr jihozlari', homework: 'Vazifa_1.docx', day: '29.03.2024', file: 'Vazifa_2.pdf', download:'Yuklang 1-2 topshiriqlarni'},
-        {id: 6, science: 'Metropoliten vagonlarning elektr jihozlari', homework: 'Vazifa_1.docx', day: '29.03.2024', file: 'Vazifa_2.pdf', download:'Yuklang 1-2 topshiriqlarni'},
-    ];
+    const dispatch = useDispatch();
+    const { homework, limit, offset } = useSelector((state) => state.getHomeworkSlice);
+    const { science } = useSelector((state) => state.getAllScience); // Assuming getAllScience returns a list of sciences
+
+    useEffect(() => {
+        dispatch(getAllScience());
+        dispatch(getTask({ limit, offset }));
+    }, [limit, offset, dispatch]);
+
+    // Function to get science name by courseId
+    const getScienceName = (courseId) => {
+        const scienceItem = science.find(science => science.id === courseId);
+        return scienceItem ? scienceItem.name : 'Unknown';
+    };
+
     return (
         <div className="backgroundPage">
-            <div style={{padding: " 20px 60px"}}>
+            <div style={{ padding: '20px 60px' }}>
                 <div className="blur">
                     <div className="result">
                         <div className="result_head">
-                            <Link style={{textDecoration: "none", color: "#8D8484"}} to="/about">
+                            <Link style={{ textDecoration: 'none', color: '#8D8484' }} to="/about">
                                 <div className="result_head_homes">Bosh saxifaga qaytish</div>
                             </Link>
-                            <Link style={{textDecoration: "none", color: "#8D8484"}} to="/science">
+                            <Link style={{ textDecoration: 'none', color: '#8D8484' }} to="/science">
                                 <div className="result_head_homes">Ortga qaytish</div>
                             </Link>
                         </div>
@@ -35,22 +47,26 @@ const Homework = () => {
                             </tr>
                             </thead>
                             <tbody>
-                            {data.map((item) => (
+                            {homework.map((item) => (
                                 <tr key={item.id}>
                                     <td className="tabless_items">
-                                        {item.science}
+                                        {getScienceName(item.course)}
                                     </td>
                                     <td className="tabless_items">
                                         {item.homework}
                                     </td>
                                     <td className="tabless_items">
-                                        {item.day}
+                                        {item.finished_date}
                                     </td>
                                     <td className="tabless_items">
-                                        {item.file}
+                                        {item.file ? (
+                                            <a href={item.file} target="_blank" rel="noopener noreferrer">
+                                                <FaFilePdf />
+                                            </a>
+                                        ) : 'No file'}
                                     </td>
                                     <td className="tabless_items">
-                                        {item.download}
+                                        {item.description}
                                     </td>
                                 </tr>
                             ))}

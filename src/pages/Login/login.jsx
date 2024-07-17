@@ -1,33 +1,89 @@
-import React from "react";
-import "./login.scss"
-import {Link} from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import './login.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../../redux/AuthSlice'; // Adjust import based on actual path
+import { useNavigate } from 'react-router-dom';
+import Spinner from "../../components/Spinner";
 
 const Login = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const { status, error, user } = useSelector((state) => state.LoginSlice);
+    const [formData, setFormData] = useState({ passport: '', password: '' });
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        dispatch(login(formData));
+    };
+
+    useEffect(() => {
+        if (status === 'succeeded' && user) {
+            setFormData({ passport: '', password: '' }); // Clear input fields
+            switch (user.role) {
+                case 'admin':
+                    navigate('/admin/home');
+                    break;
+                case 'teacher':
+                    navigate('/teacher/about');
+                    break;
+                case 'student':
+                    navigate('/about');
+                    break;
+                default:
+                    // Handle unexpected roles
+                    break;
+            }
+        }
+    }, [status, user, navigate]);
+
     return (
         <div className="login-container">
-            <form className="login-form">
-
+            {status === 'loading' && <Spinner position="full"/>}
+            {error && <p>{error}</p>}
+            <form className="login-form" onSubmit={handleSubmit}>
                 <h2>Login</h2>
                 <div className="form-group">
-                    <label className="login_labels" htmlFor="login">Login</label>
-                    <input className="login_inputs" type="text" id="login" placeholder="F I O" />
+                    <label className="login_labels" htmlFor="login">
+                        Login
+                    </label>
+                    <input
+                        className="login_inputs"
+                        type="text"
+                        name="passport"
+                        value={formData.passport}
+                        onChange={handleChange}
+                        placeholder="Passport"
+                        autoComplete="username"
+                        required
+                    />
                 </div>
                 <div className="form-group">
-                    <label  className="login_labels" htmlFor="password">Parol</label>
-                    <input className="login_inputs" type="password" id="password" placeholder="Password" />
-                    <a href="#" className="forgot-password">Forgot Password?</a>
+                    <label className="login_labels" htmlFor="password">
+                        Parol
+                    </label>
+                    <input
+                        className="login_inputs"
+                        type="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        placeholder="Password"
+                        autoComplete="current-password"
+                        required
+                    />
                 </div>
-                <Link to="/about">
-                <button type="submit"  className="login-button">
+                <button type="submit" className="login-button">
                     Kirish
                 </button>
-                </Link>
-                <div className="alternative-login">
-                    or continue with
-                </div>
-                <div className="register">
-                    Don't have an account yet? <a href="#">Register for free</a>
-                </div>
+
             </form>
         </div>
     );

@@ -1,18 +1,32 @@
-import React, {useState} from 'react';
-import TeacherModal from "../AddTeacher/ModalTeacher/TeacherModal";
-import TableTeacher from "../AddTeacher/TableTeacher/TableTeacher";
+import React, {useEffect, useState} from 'react';
+
 import Home from "../Home/Home";
 import ModalGroup from "./ModalGroup/ModalGroup";
 import TableGroup from "./TableGroup/TableGroup";
+import {useDispatch, useSelector} from "react-redux";
+import {addGroups} from "../../../../redux/AddGroupSlice/addGroupSlice";
+import {getScience} from "../../../../redux/getScienceSlice/getScienceSlice";
+import {getTeachers} from "../../../../redux/getTeacherSlice/getTeacherSlice";
+import {getGroup} from "../../../../redux/getGroupSlice/getGroupSlice";
+import TableScience from "../AddScience/TableScience/TableScience";
+import {setPage} from "../../../../redux/getStudentSlice";
 
 const AddGroup = ({ data }) => {
-    const [showModal, setShowModal] = useState(false);
+    const [showModal, setShowModal] = useState(false)
+    const dispatch = useDispatch();
+    const groupData = useSelector((state) => state.GroupSlice.postGroup);
+    const { groups, limit, offset, page, status, error } = useSelector((state) => state.GetGroup);
+
     const [formData, setFormData] = useState({
-        group: '',
-        exsperiense: '',
-        yearId: ''
+        name: '',
+        study_period: '',
+        training_hour: ''
     });
-    const [tableData, setTableData] = useState([]);
+    useEffect(() => {
+
+        dispatch(getGroup({ limit, offset }));
+
+    }, [limit, offset, dispatch]);
 
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
@@ -27,13 +41,18 @@ const AddGroup = ({ data }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setTableData([...tableData, formData]);
+        dispatch(addGroups(formData)).then(() => {
+            dispatch(getGroup({ limit, offset }));
+        });
         setFormData({
-            group: '',
-            exsperiense: '',
-            yearId: ''
+            name: '',
+            study_period: '',
+            training_hour: ''
         });
         handleCloseModal();
+    };
+    const handlePageChange = (newPage) => {
+        dispatch(setPage(newPage));
     };
     return (
         <Home>
@@ -46,7 +65,25 @@ const AddGroup = ({ data }) => {
                     handleChange={handleChange}
                     formData={formData}
                 />
-                <TableGroup data={tableData} />
+                {status === 'loading' && <p>Loading...</p>}
+                {status === 'succeeded' && <TableGroup data={groups || []} />}
+                {status === 'failed' && <p>{error}</p>}
+                <div className="pagination-container">
+                    <button
+                        className="pagination-button"
+                        disabled={page === 1}
+                        onClick={() => handlePageChange(page - 1)}
+                    >
+                        Previous
+                    </button>
+                    <span className="pagination-page">Page {page}</span>
+                    <button
+                        className="pagination-button"
+                        onClick={() => handlePageChange(page + 1)}
+                    >
+                        Next
+                    </button>
+                </div>
             </div>
         </Home>
     );

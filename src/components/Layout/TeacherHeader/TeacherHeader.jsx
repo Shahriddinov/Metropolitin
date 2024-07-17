@@ -26,18 +26,18 @@ const TeacherHeader = () => {
                         <Link to="/teacher/schedule">
                             <li className="header_navbar_nav">DARS JADVALI</li>
                         </Link>
+                        {/*<Link to="/teacher/homework">*/}
+                        {/*    <li className="header_navbar_nav">VAZIFALAR</li>*/}
+                        {/*</Link>*/}
+                        <Link to="/teacher/personal">
+                            <li className="header_navbar_nav">SHAXSIY MA'LUMOT</li>
+                        </Link>
                         <Link to="/teacher/science">
                             <li className="header_navbar_nav">FANLAR</li>
                         </Link>
-                        <Link to="/personal">
-                            <li className="header_navbar_nav">SHAXSIY MA'LUMOT</li>
-                        </Link>
-                        <Link to="/library">
-                            <li className="header_navbar_nav">KUTUBXONA</li>
-                        </Link>
-                        <Link to="/homework">
-                            <li className="header_navbar_nav">VAZIFALAR</li>
-                        </Link>
+                        {/*<Link to="/library">*/}
+                        {/*    <li className="header_navbar_nav">KUTUBXONA</li>*/}
+                        {/*</Link>*/}
                         <Link to="/test">
                             <li className="header_navbar_nav">YANKUNIY TEST</li>
                         </Link>

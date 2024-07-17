@@ -1,9 +1,19 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import "./library.scss"
 import {Link} from "react-router-dom";
-import book from "../../assets/images/books.png"
+import {useDispatch, useSelector} from "react-redux";
+import {getLibrary, getLibraryAll} from "../../redux/getLibrarySlice/getLibrarySlice";
+import allLibrary from "../../redux/getLibrarySlice/GetAliiLibrary";
+import Book from "../../assets/images/books.png"
 
 const Library = () => {
+    const dispatch = useDispatch();
+    const {librarys} = useSelector((state) => state.allLibrary);
+
+    useEffect(() => {
+        dispatch(getLibraryAll());
+    }, [ dispatch]);
+    console.log(librarys)
     const AllBook = [
         {img: require("../../assets/images/books.png"), name: "Badiiy adabiyotlar", book: "Kitoblar"},
         {img: require("../../assets/images/books.png"), name: "Xorijiy adabiyotlar", book: "Kitoblar"},
@@ -25,11 +35,12 @@ const Library = () => {
                         </div>
                         <div className="library_electron">Metropoliten elektron kutubxonasi</div>
                         <div  className="library_bookCard">
-                            {AllBook.map((item, index) => (
+                            {librarys.map((item, index) => (
                                 <div key={index} className="library_bookCard_BookNames">
-                                    <img className="library_bookCard_BookNames_bookImg" src={item.img} alt=""/>
+                                    <img className="library_bookCard_BookNames_bookImg" src={Book} alt=""/>
                                     <span className="library_bookCard_BookNames_NN">{item.name}</span>
-                                   <Link to="/library/guide"> <button className="library_bookCard_BookNames_seemBook">{item.book}</button></Link>
+                                    {/*<a href={file.file} target="_blank" download={file.title}>Yuklab olish</a>*/}
+                                  <a href={item.file} target="_blank" download={item.title} className="library_bookCard_BookNames_seemBook">Kitoblar</a>
                                 </div>
                             ))}
                         </div>

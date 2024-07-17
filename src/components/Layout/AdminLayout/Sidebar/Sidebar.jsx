@@ -7,7 +7,9 @@ const Sidebar = () => {
     return (
         <div className="sidebar">
             <ul className="sidebar_Sul">
-                <li className="sidebar_Sul_Sli">Dars jadvali yaratish</li>
+                <Link to="/admin/addSchedule" style={{textDecoration: "none", color: "white"}}>
+                    <li className="sidebar_Sul_Sli">Dars jadvali yaratish</li>
+                </Link>
                 <Link to="/admin/addLibrary" style={{textDecoration: "none", color: "white"}}>
                     <li className="sidebar_Sul_Sli">Kitobxona</li>
                 </Link>
@@ -23,7 +25,9 @@ const Sidebar = () => {
                 <Link to="/admin/addGroup" style={{textDecoration: "none", color: "white"}}>
                     <li className="sidebar_Sul_Sli">Guruh yaratish</li>
                 </Link>
-                <li className="sidebar_Sul_Sli">Test yaratish</li>
+                <Link to="/admin/addTest" style={{textDecoration: "none", color: "white"}}>
+                    <li className="sidebar_Sul_Sli">Test yaratish</li>
+                </Link>
                 <Link to="/admin/addTeacher" style={{textDecoration: "none", color: "white"}}>
                     <li className="sidebar_Sul_Sli">O'qituvchi qo'shish</li>
                 </Link>
