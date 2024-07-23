@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { FaTrashAlt, FaEdit } from 'react-icons/fa';
-import ModalTest from './ModalTest/ModalTest';
+import SettingTest from './SettingTest/SettingTest';
 import './testCreation.scss';
 import Home from "../Home/Home";
 import Settings from "../../../../assets/images/settings.png";
-import SettingsModal from './SettingsModal/SettingsModal'; // Import the SettingsModal component
+import ModalTest from './ModalTest/ModalTest'; // Import the ModalTest component
 
 const TestCreation = () => {
     const [questions, setQuestions] = useState([]);
@@ -95,7 +95,7 @@ const TestCreation = () => {
                     />
                 )}
                 {showSettingsModal && (
-                    <SettingsModal onClose={handleCloseSettingsModal} />
+                    <SettingTest onClose={handleCloseSettingsModal} />
                 )}
             </div>
         </Home>

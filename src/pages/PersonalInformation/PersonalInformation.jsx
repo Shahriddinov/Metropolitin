@@ -5,7 +5,7 @@ import "./personalInformation.scss";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getStudent } from "../../redux/getStudentSlice/getStudentSlice";
-import { baseUrlImg } from "../../services/api/utilis";
+
 import avatarIcon from "../../assets/images/avatar-icon.png"; // Path to your avatar icon image
 
 const PersonalInformation = () => {

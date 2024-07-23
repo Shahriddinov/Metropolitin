@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../redux/AuthSlice'; // Adjust import based on actual path
 import { useNavigate } from 'react-router-dom';
 import Spinner from "../../components/Spinner";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -41,13 +43,22 @@ const Login = () => {
                     // Handle unexpected roles
                     break;
             }
+            toast.success('Login successful!', {
+                position: "top-center"
+            });
         }
-    }, [status, user, navigate]);
+
+        if (status === 'failed' && error) {
+            toast.error(error, {
+                position: "top-center"
+            });
+        }
+    }, [status, user, error, navigate]);
 
     return (
         <div className="login-container">
-            {status === 'loading' && <Spinner position="full"/>}
-            {error && <p>{error}</p>}
+            <ToastContainer />
+            {status === 'loading' && <Spinner position="full" />}
             <form className="login-form" onSubmit={handleSubmit}>
                 <h2>Login</h2>
                 <div className="form-group">

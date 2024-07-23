@@ -21,8 +21,8 @@ const TableSchedule = ({data}) => {
                             <td>{item.day}</td>
                             <td>{item.start_time} && {item.end_time} </td>
                             <td>{item?.course?.name}</td>
-                            <td>{item.teacher.fullname}</td>
-                            <td>{item.group.name}</td>
+                            <td>{item.teacher?.fullname}</td>
+                            <td>{item.group?.name}</td>
                         </tr>
                     ))}
                     </tbody>
