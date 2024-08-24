@@ -3,14 +3,14 @@ import "./science.scss";
 import { Link } from "react-router-dom";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
-import { getScience } from "../../redux/getScienceSlice/getScienceSlice";
-import { getTeachers } from "../../redux/getTeacherSlice/getTeacherSlice";
-import { setPage } from "../../redux/getStudentSlice";
+import { getScience } from "../../redux/ScienceSlice";
+import { getTeachers } from "../../redux/TeacherSlice";
+import { setPage } from "../../redux/LibrarySlice/librarySlice";
 
 const Science = () => {
     const dispatch = useDispatch();
-    const { sciences, limit, offset, page } = useSelector((state) => state.AllScienceSlice);
-    const { teacher: teacherData } = useSelector((state) => state.teacherReducer);
+    const { scienceList, limit, offset, page } = useSelector((state) => state.ScienceSlice);
+    const { teachers: teacherData } = useSelector((state) => state.TeacherSlice);
     const [selectedOption, setSelectedOption] = useState(null);
     const [formData, setFormData] = useState({
         name: "",
@@ -27,7 +27,13 @@ const Science = () => {
     }, [limit, offset, dispatch]);
 
     // Extract unique study periods from teacherData
-    const uniqueStudyPeriods = [...new Set(teacherData.map(item => item.group.study_period))];
+    const uniqueStudyPeriods = [
+        ...new Set(
+            teacherData
+                .filter(item => item.group && item.group.study_period) // Ensure group and study_period exist
+                .map(item => item.group.study_period)
+        )
+    ];
 
     // Map options for the Select component based on unique study periods
     const studyPeriodOptions = uniqueStudyPeriods.map((period, index) => ({
@@ -50,7 +56,7 @@ const Science = () => {
                 <div className="science">
                     <div className="science_class">
                         <Link style={{ textDecoration: "none", color: "#8D8484" }} to="/about">
-                            <div className="science_class_weeks">Bosh saxifaga qaytish</div>
+                            <div className="science_class_weeks">Bosh sahifaga qaytish</div>
                         </Link>
                         <Select
                             value={selectedOption}
@@ -68,7 +74,7 @@ const Science = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {sciences.map((item) => (
+                        {scienceList.map((item) => (
                             <tr key={item.id}>
                                 <td className="science_liness_items">
                                     <Link to="/homework"

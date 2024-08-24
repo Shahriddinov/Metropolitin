@@ -39,7 +39,7 @@ const Header = () => {
                             <li className="header_navbar_nav">VAZIFALAR</li>
                         </Link>
                         <Link to="/test">
-                            <li className="header_navbar_nav">YANKUNIY TEST</li>
+                            <li className="header_navbar_nav">YAKUNIY TEST</li>
                         </Link>
                     </ul>
                     {isMobile && (

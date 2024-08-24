@@ -2,15 +2,15 @@ import React, { useEffect } from 'react';
 import './homework.scss';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTask } from '../../redux/getHomeworkSlice/getHomeworkSlice';
-import { getAllScience } from '../../redux/getScienceSlice/getScienceSlice';
+import { getTask } from '../../redux/HomeworkSlice';
+import { getAllScience } from '../../redux/ScienceSlice';
 // Import the PDF icon
 import { FaFilePdf } from 'react-icons/fa'; // Using FontAwesome for the PDF icon
 
 const Homework = () => {
     const dispatch = useDispatch();
-    const { homework, limit, offset } = useSelector((state) => state.getHomeworkSlice);
-    const { science } = useSelector((state) => state.getAllScience); // Assuming getAllScience returns a list of sciences
+    const { homework, limit, offset } = useSelector((state) => state.HomeworkSlice);
+    const { scienceList } = useSelector((state) => state.ScienceSlice); // Assuming getAllScience returns a list of sciences
 
     useEffect(() => {
         dispatch(getAllScience());
@@ -19,7 +19,7 @@ const Homework = () => {
 
     // Function to get science name by courseId
     const getScienceName = (courseId) => {
-        const scienceItem = science.find(science => science.id === courseId);
+        const scienceItem = scienceList.find(science => science.id === courseId);
         return scienceItem ? scienceItem.name : 'Unknown';
     };
 
@@ -30,7 +30,7 @@ const Homework = () => {
                     <div className="result">
                         <div className="result_head">
                             <Link style={{ textDecoration: 'none', color: '#8D8484' }} to="/about">
-                                <div className="result_head_homes">Bosh saxifaga qaytish</div>
+                                <div className="result_head_homes">Bosh sahifaga qaytish</div>
                             </Link>
                             <Link style={{ textDecoration: 'none', color: '#8D8484' }} to="/science">
                                 <div className="result_head_homes">Ortga qaytish</div>

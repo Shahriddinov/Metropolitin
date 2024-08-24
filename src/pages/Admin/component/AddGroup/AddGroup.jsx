@@ -1,35 +1,57 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Home from "../Home/Home";
 import ModalGroup from "./ModalGroup/ModalGroup";
 import TableGroup from "./TableGroup/TableGroup";
-import {useDispatch, useSelector} from "react-redux";
-import {addGroups} from "../../../../redux/AddGroupSlice/addGroupSlice";
-import {getScience} from "../../../../redux/getScienceSlice/getScienceSlice";
-import {getTeachers} from "../../../../redux/getTeacherSlice/getTeacherSlice";
-import {getGroup} from "../../../../redux/getGroupSlice/getGroupSlice";
-import TableScience from "../AddScience/TableScience/TableScience";
-import {setPage} from "../../../../redux/getStudentSlice";
+import {addGroups, deleteGroup, getAllGroups, getGroup, updateGroup} from "../../../../redux/GroupSlice";
+import {setPage} from "../../../../redux/LibrarySlice/librarySlice"; // Adjust the import path as necessary
+// import { setPage } from "../../../../redux/StudentSlice/";
+
 
 const AddGroup = ({ data }) => {
-    const [showModal, setShowModal] = useState(false)
     const dispatch = useDispatch();
-    const groupData = useSelector((state) => state.GroupSlice.postGroup);
-    const { groups, limit, offset, page, status, error } = useSelector((state) => state.GetGroup);
+    const [showModal, setShowModal] = useState(false);
+    const [editMode, setEditMode] = useState(false);
+    const [selectedGroupId, setSelectedGroupId] = useState(null);
 
+    const { allGroups = [], limit, offset, page, status, error } = useSelector((state) => state.GroupSlice  || {});
     const [formData, setFormData] = useState({
         name: '',
         study_period: '',
         training_hour: ''
     });
+
     useEffect(() => {
-
-        dispatch(getGroup({ limit, offset }));
-
-    }, [limit, offset, dispatch]);
+        dispatch(getGroup()); // Adjusted to use the getAllGroups action
+    }, [dispatch]);
 
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
+
+    const handleEdit = (group) => {
+        setEditMode(true);
+        setSelectedGroupId(group.id);
+        setFormData({
+            name: group.name,
+            study_period: group.study_period,
+            training_hour: group.training_hour
+        });
+        handleShowModal();
+    };
+
+    const handleDelete = (groupId) => {
+        dispatch(deleteGroup(groupId)).then((action) => {
+            if (action.meta.requestStatus === 'fulfilled') {
+                toast.success("Group successfully deleted!");
+            } else if (action.meta.requestStatus === 'rejected') {
+                toast.error("Error occurred while deleting the group.");
+            }
+            dispatch(getAllGroups());
+        });
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -41,9 +63,22 @@ const AddGroup = ({ data }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(addGroups(formData)).then(() => {
-            dispatch(getGroup({ limit, offset }));
-        });
+        if (editMode) {
+            dispatch(updateGroup({ id: selectedGroupId, payload: formData })).then(() => {
+                toast.success("Group successfully updated!");
+                dispatch(getAllGroups());
+            }).catch(() => {
+                toast.error("Error occurred while updating the group.");
+            });
+        } else {
+            dispatch(addGroups(formData)).then(() => {
+                toast.success("Group successfully added!");
+                dispatch(getAllGroups());
+            }).catch(() => {
+                toast.error("Error occurred while adding the group.");
+            });
+        }
+
         setFormData({
             name: '',
             study_period: '',
@@ -51,13 +86,15 @@ const AddGroup = ({ data }) => {
         });
         handleCloseModal();
     };
+
     const handlePageChange = (newPage) => {
         dispatch(setPage(newPage));
     };
+
     return (
         <Home>
             <div className="addTeacher">
-                <button className="add-teacher-btn" onClick={handleShowModal}>+ Guruh yaratish</button>
+                <button className="add-teacher-btn" onClick={handleShowModal}>+ Create Group</button>
                 <ModalGroup
                     show={showModal}
                     handleClose={handleCloseModal}
@@ -66,7 +103,13 @@ const AddGroup = ({ data }) => {
                     formData={formData}
                 />
                 {status === 'loading' && <p>Loading...</p>}
-                {status === 'succeeded' && <TableGroup data={groups || []} />}
+                {status === 'succeeded' && (
+                    <TableGroup
+                        handleDelete={handleDelete}
+                        handleEdit={handleEdit}
+                        data={allGroups || []} // Updated to use the allGroups array from the combined slice
+                    />
+                )}
                 {status === 'failed' && <p>{error}</p>}
                 <div className="pagination-container">
                     <button
@@ -85,6 +128,7 @@ const AddGroup = ({ data }) => {
                     </button>
                 </div>
             </div>
+            <ToastContainer />
         </Home>
     );
 };

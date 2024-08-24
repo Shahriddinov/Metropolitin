@@ -3,15 +3,14 @@ import "./teacherInformation.scss";
 import { Link } from "react-router-dom";
 import Photo from "../../../../assets/images/Photos.png";
 import { useDispatch, useSelector } from "react-redux";
-import {getTeachers} from "../../../../redux/getTeacherSlice/getTeacherSlice";
+import {getTeachers} from "../../../../redux/TeacherSlice";
 import avatarIcon from "../../../../assets/images/avatar-icon.png";
 const TeacherInformation = () => {
     const dispatch = useDispatch();
-    const { teacher, limit, offset } = useSelector((state) => state.teacherReducer);
+    const { teachers, limit, offset } = useSelector((state) => state.TeacherSlice);
 
     useEffect(() => {
         const userID = localStorage.getItem('userID');
-        console.log('Retrieved userID from localStorage:', userID); // Debugging line
 
         if (userID) {
             dispatch(getTeachers({ limit, offset }));
@@ -19,7 +18,7 @@ const TeacherInformation = () => {
     }, [limit, offset, dispatch]);
 
     const loggedInStudentId = localStorage.getItem('userID');
-    const loggedInStudent = teacher.find(teacher => teacher.id === parseInt(loggedInStudentId));
+    const loggedInStudent = teachers.find(teacher => teacher.id === parseInt(loggedInStudentId));
 
 
 
@@ -29,7 +28,7 @@ const TeacherInformation = () => {
                 <div className="blur">
                     <div className="personal_head">
                         <Link style={{ textDecoration: "none", color: "#8D8484" }} to="/teacher/about">
-                            <div className="personal_head_homes">Bosh saxifaga qaytish</div>
+                            <div className="personal_head_homes">Bosh sahifaga qaytish</div>
                         </Link>
                     </div>
                     <div className="personal_infos">
@@ -51,7 +50,7 @@ const TeacherInformation = () => {
                                     <div className="personal_infos_InfoCard_shows_self_NTitle">Tug'ilgan kun</div>
                                     <div className="personal_infos_InfoCard_shows_self_NTitle">Jinsi</div>
                                     <div className="personal_infos_InfoCard_shows_self_NTitle">Manzil</div>
-                                    <div className="personal_infos_InfoCard_shows_self_NTitle">Guruhi</div>
+                                    <div className="personal_infos_InfoCard_shows_self_NTitle">Mutaxasislik</div>
                                     {/*<div className="personal_infos_InfoCard_shows_self_NTitle">O'qituvchi</div>*/}
                                 </div>
                                 <div className="personal_infos_InfoCard_shows_self">
@@ -61,7 +60,7 @@ const TeacherInformation = () => {
                                             <div className="personal_infos_InfoCard_shows_self_NTitle">{loggedInStudent.birthday}</div>
                                             <div className="personal_infos_InfoCard_shows_self_NTitle">{loggedInStudent.gender}</div>
                                             <div className="personal_infos_InfoCard_shows_self_NTitle">{loggedInStudent.adress}</div>
-                                            <div className="personal_infos_InfoCard_shows_self_NTitle">{loggedInStudent.group.name}</div>
+                                            <div className="personal_infos_InfoCard_shows_self_NTitle">{loggedInStudent.expertise}</div>
                                             {/*<div className="personal_infos_InfoCard_shows_self_NTitle">{getTeacherName(loggedInStudent.teacher)}</div>*/}
                                         </>
                                     )}

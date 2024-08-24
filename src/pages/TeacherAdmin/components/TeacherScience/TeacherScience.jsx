@@ -3,18 +3,16 @@ import "./teacherScience.scss";
 import { Link, useNavigate } from "react-router-dom";
 import ModalScience from "./ModalScience/ModalScien";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllScience, getScience } from "../../../../redux/getScienceSlice/getScienceSlice";
-import { addTask } from "../../../../redux/AddHomeworkSlice/AddHomeworkSlice";
-import { getAllGroups } from "../../../../redux/getGroupSlice/getGroupSlice";
-import { getTask } from "../../../../redux/getHomeworkSlice/getHomeworkSlice";
+import { getAllScience, getScience } from "../../../../redux/ScienceSlice";
+import { getTask, addTask } from "../../../../redux/HomeworkSlice";
+import {getAllGroups} from "../../../../redux/GroupSlice";
 
 const TeacherScience = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { sciences, limit, offset } = useSelector((state) => state.AllScienceSlice);
-    const { teacher } = useSelector((state) => state.teacherReducer);
-    const { science } = useSelector((state) => state.getAllScience);
-    const { homework } = useSelector((state) => state.getHomeworkSlice);
+    const { scienceList, limit, offset } = useSelector((state) => state.ScienceSlice);
+    const { teacher } = useSelector((state) => state.TeacherSlice);
+    const { homework } = useSelector((state) => state.HomeworkSlice);
 
     const [showModal, setShowModal] = useState(false);
     const [selectedScience, setSelectedScience] = useState(null);
@@ -61,6 +59,7 @@ const TeacherScience = () => {
         dispatch(addTask(formData)).then((result) => {
             if (result.meta.requestStatus === 'fulfilled') {
                 navigate("/teacher/homework", { state: { selectedScience } });
+                dispatch(getTask())
             }
         });
         setFormData({
@@ -85,7 +84,7 @@ const TeacherScience = () => {
                 <div className="science">
                     <div className="science_class">
                         <Link style={{ textDecoration: "none", color: "#8D8484" }} to="/teacher/about">
-                            <div className="science_class_weeks">Bosh saxifaga qaytish</div>
+                            <div className="science_class_weeks">Bosh sahifaga qaytish</div>
                         </Link>
                     </div>
 
@@ -100,7 +99,7 @@ const TeacherScience = () => {
                             </tr>
                             </thead>
                             <tbody>
-                            {sciences.map((row) => (
+                            {scienceList.map((row) => (
                                 <tr key={row.id} onClick={() => handleShowModal(row)}>
                                     <td className="science_liness_items">{row.name}</td>
                                     <td className="science_liness_items">{row.group}</td>
@@ -126,7 +125,7 @@ const TeacherScience = () => {
                             show={showModal}
                             handleClose={handleCloseModal}
                             teacherData={teacher || []}
-                            scienceData={science || []}
+                            scienceData={scienceList || []}
                             setSelectedScience={setSelectedScience}  // Pass the function here
                         />}
                     </div>

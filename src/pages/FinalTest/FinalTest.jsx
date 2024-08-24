@@ -10,7 +10,7 @@ const FinalTest = () => {
                     <div className="finalTest">
                         <div className="finalTest_head">
                             <Link style={{textDecoration: "none", color: "#8D8484"}} to="/about">
-                                <div className="finalTest_head_homes">Bosh saxifaga qaytish</div>
+                                <div className="finalTest_head_homes">Bosh sahifaga qaytish</div>
                             </Link>
 
                             <div className="finalTest_head_homes">00:00:00</div>

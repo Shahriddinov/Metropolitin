@@ -1,10 +1,11 @@
 import React from 'react';
 import pdf from "../../../../../assets/images/pdf.webp";
+import {AiOutlineDelete, AiOutlineEdit} from "react-icons/ai";
 
 const isPdf = (fileName) => {
     return fileName.endsWith('.pdf');
 };
-const TableDocuments = ({data}) => {
+const TableDocuments = ({data, handleDelete, handleEdit}) => {
     return (
         <div className="table_container">
             <table className="table_container-Ttabel">
@@ -14,6 +15,8 @@ const TableDocuments = ({data}) => {
                     <th className="table_container_Ttabel_Tth">Buyruq sanasi</th>
                     <th className="table_container_Ttabel_Tth">Fayl yuklash</th>
                     <th className="table_container_Ttabel_Tth">Qisqacha mazmuni</th>
+                    <th className="table_container_Ttabel_Tth">O'zgartirish</th>
+                    <th className="table_container_Ttabel_Tth">O'chirish</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -41,6 +44,20 @@ const TableDocuments = ({data}) => {
                             )}
                         </td>
                         <td className="table_container_Ttabel_Ttd">{item.description}</td>
+                        <td className="table_container_Ttabel_Ttd">
+                            <AiOutlineEdit
+                                fontSize="24px"
+                                cursor="pointer"
+                                onClick={() => handleEdit(item)} // Handle edit click
+                            />
+                        </td>
+                        <td className="table_container_Ttabel_Ttd">
+                            <AiOutlineDelete
+                                fontSize="24px"
+                                cursor="pointer"
+                                onClick={() => handleDelete(item.id)}
+                            />
+                        </td>
                     </tr>
                 ))}
                 </tbody>

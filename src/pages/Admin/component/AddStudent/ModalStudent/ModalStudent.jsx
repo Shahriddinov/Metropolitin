@@ -97,7 +97,7 @@ const ModalStudent = ({show, handleClose, handleSubmit, handleChange, formData, 
                             </div>
                         </div>
                         <div className="form-group form-submit">
-                            <button className="MButton" type="submit">Saqlash</button>
+                            <button className="MButton" type="subm it">Saqlash</button>
                         </div>
                     </form>
                 </div>

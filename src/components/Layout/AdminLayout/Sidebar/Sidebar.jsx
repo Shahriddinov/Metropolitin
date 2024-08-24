@@ -11,7 +11,7 @@ const Sidebar = () => {
                     <li className="sidebar_Sul_Sli">Dars jadvali yaratish</li>
                 </Link>
                 <Link to="/admin/addLibrary" style={{textDecoration: "none", color: "white"}}>
-                    <li className="sidebar_Sul_Sli">Kitobxona</li>
+                    <li className="sidebar_Sul_Sli">Kutubxona</li>
                 </Link>
                 <Link to="/admin/addStudent" style={{textDecoration: "none", color: "white"}}>
                     <li className="sidebar_Sul_Sli">Talabalar</li>

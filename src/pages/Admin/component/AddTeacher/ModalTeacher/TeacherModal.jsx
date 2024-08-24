@@ -48,10 +48,7 @@ const TeacherModal = ({ show, handleClose, handleSubmit, handleChange, formData,
                                 <label>ID/Passport (seriya raqam)</label>
                                 <input type="text" name="passport" value={formData.passport} onChange={handleChange} required/>
                             </div>
-                            <div className="form-group">
-                                <label>JSHSHIR (PINFL)</label>
-                                <input type="number" name="jshshr" value={formData.jshshr} onChange={handleChange} required/>
-                            </div>
+
                             <div className="form-group">
                                 <label>Tug'ilgan joyi</label>
                                 <input type="text" name="place_of_birth" value={formData.place_of_birth} onChange={handleChange} required/>
@@ -63,13 +60,8 @@ const TeacherModal = ({ show, handleClose, handleSubmit, handleChange, formData,
                                 <input type="text" name="work_place" value={formData.work_place} onChange={handleChange} required/>
                             </div>
                             <div className="form-group">
-                                <label>Guruh</label>
-                                <select name="group" value={formData.group} onChange={handleChange} style={{ padding: "7px" }} required>
-                                    <option value="" disabled>Tanlang</option>
-                                    {groupsData && groupsData.map((groups) => (
-                                        <option key={groups.id} value={groups?.id}>{groups?.name}</option>
-                                    ))}
-                                </select>
+                                <label>JSHSHIR (PINFL)</label>
+                                <input type="number" name="jshshr" value={formData.jshshr} onChange={handleChange} required/>
                             </div>
                         </div>
                         <div className="form-row">

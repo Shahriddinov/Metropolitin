@@ -35,7 +35,7 @@ const ModalScience = ({ data, show, handleClose, handleSubmit, handleChange, han
                                 <option key={science.id} value={science.id}>{science.name}</option>
                             ))}
                         </select>
-                        <label htmlFor="upload">Topshiriqni yuklash</label>
+                        <label htmlFor="upload">Topshiriqni yuklash
                         <div className="upload-section">
                             <input
                                 type="file"
@@ -46,6 +46,7 @@ const ModalScience = ({ data, show, handleClose, handleSubmit, handleChange, han
                             />
                             <div className="upload-icon">&#x21E9;</div>
                         </div>
+                        </label>
                         <textarea
                             name="description"
                             placeholder="Izoh..."

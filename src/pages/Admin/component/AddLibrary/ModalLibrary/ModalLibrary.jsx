@@ -1,36 +1,11 @@
 import React, { useState } from 'react';
 import File from '../../../../../assets/images/file.png';
 
-function ModalLibrary({ show, handleClose, handleSubmit }) {
-    const [formData, setFormData] = useState({
-        name: '',
-        type: 'artistic',
-        file: null,
-        image: null
-    });
+function ModalLibrary({ show, handleClose, handleChange, formData, handleSubmit }) {
 
-    const handleChange = (e) => {
-        const { name, value, files } = e.target;
-        setFormData({
-            ...formData,
-            [name]: files ? files[0] : value
-        });
-    };
 
-    const handleFormSubmit = async (e) => {
-        e.preventDefault();
-        const dataToSubmit = {
-            ...formData,
-            image: null, // Ensure the image field is set to null
-        };
-        await handleSubmit(dataToSubmit);
-        setFormData({
-            name: '',
-            type: 'artistic',
-            file: null,
-            image: null
-        });
-    };
+
+
 
     if (!show) return null;
 
@@ -46,7 +21,7 @@ function ModalLibrary({ show, handleClose, handleSubmit }) {
                 <div className="modal-body">
                     <div className="library">
                         <div className="upload-section">
-                            <form className="upload-card" onSubmit={handleFormSubmit} encType="multipart/form-data">
+                            <form  className="upload-card"  onSubmit={handleSubmit} encType="multipart/form-data">
                                 <img src={File} alt="Upload PDF Icon" />
                                 <input
                                     type="text"

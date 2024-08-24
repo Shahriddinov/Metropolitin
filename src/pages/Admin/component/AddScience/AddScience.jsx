@@ -1,25 +1,27 @@
-import React, {useEffect, useState} from 'react';
-
+import React, { useEffect, useState } from 'react';
 import Home from "../Home/Home";
 import TableScience from "./TableScience/TableScience";
 import ModalScience from "./ModalScience/ModalScience";
-import {useDispatch, useSelector} from "react-redux";
-import {addSciences} from "../../../../redux/AddScience/addScienceSlice";
-import {setPage} from "../../../../redux/getStudentSlice";
-import {getScience} from "../../../../redux/getScienceSlice/getScienceSlice";
-import {getTeachers} from "../../../../redux/getTeacherSlice/getTeacherSlice";
-import {getAllGroups} from "../../../../redux/getGroupSlice/getGroupSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {addSciences, updateScience, getScience, deleteScience, getAllScience} from "../../../../redux/ScienceSlice";
 
+import { getTeachers } from "../../../../redux/TeacherSlice";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {getAllGroups} from "../../../../redux/GroupSlice";
+import {setPage} from "../../../../redux/LibrarySlice/librarySlice";
 
 const AddScience = () => {
     const [showModal, setShowModal] = useState(false);
-    const dispatch = useDispatch();
-    const scienceData = useSelector((state) => state.AddScience.postScience);
-    const { sciences, limit, offset, page, status, error } = useSelector((state) => state.AllScienceSlice);
-    const { teacher, status: teacherStatus, error: teacherError } = useSelector((state) => state.teacherReducer); // Adjust state access
-    const { allGroups, status: groupsStatus, error: groupsError } = useSelector((state) => state.GetAllGroups); // Adjust state access
+    const [editMode, setEditMode] = useState(false); // To track if we are in edit mode
+    const [selectedScienceId, setSelectedScienceId] = useState(null); // To store the selected science ID for updating
 
-    
+    const dispatch = useDispatch();
+    const scienceData = useSelector((state) => state.ScienceSlice.postScience);
+    const { scienceList, limit, offset, page, status, error } = useSelector((state) => state.ScienceSlice);
+    const { teacher } = useSelector((state) => state.TeacherSlice);
+    const { allGroups } = useSelector((state) => state.GroupSlice);
+
     const [formData, setFormData] = useState({
         name: "",
         study_period: "",
@@ -28,15 +30,51 @@ const AddScience = () => {
         group: '',
         teacher: ''
     });
-    useEffect(() => {
 
-        dispatch(getScience({ limit, offset }));
+    useEffect(() => {
+        dispatch(getAllScience({ limit, offset }));
         dispatch(getTeachers());
         dispatch(getAllGroups());
     }, [limit, offset, dispatch]);
 
     const handleShowModal = () => setShowModal(true);
-    const handleCloseModal = () => setShowModal(false);
+    const handleCloseModal = () => {
+        setShowModal(false);
+        setEditMode(false); // Reset edit mode
+        setFormData({
+            name: "",
+            study_period: "",
+            training: "",
+            lesson_day: "",
+            group: '',
+            teacher: ''
+        });
+    };
+
+    const handleEdit = (science) => {
+        setEditMode(true); // Enter edit mode
+        setSelectedScienceId(science.id); // Set the selected science ID
+        setFormData({
+            name: science.name,
+            study_period: science.study_period,
+            training: science.training,
+            lesson_day: science.lesson_day,
+            group: science.group,
+            teacher: science.teacher
+        });
+        handleShowModal();
+    };
+
+    const handleDelete = (scienceId) => {
+        dispatch(deleteScience(scienceId)).then((action) => {
+            if (action.meta.requestStatus === 'fulfilled') {
+                toast.success("Science successfully deleted!");
+            } else {
+                toast.error("Error occurred while deleting the science.");
+            }
+            dispatch(getScience({ limit, offset }));
+        });
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -48,23 +86,30 @@ const AddScience = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(addSciences(formData)).then(() => {
-            dispatch(getScience({ limit, offset }));
-        });
-        setFormData({
-            name: "",
-            study_period: "",
-            training: "",
-            lesson_day: "",
-            group: '',
-            teacher: ''
-
-        });
+        if (editMode) {
+            dispatch(updateScience({ id: selectedScienceId, payload: formData })).then(() => {
+                toast.success("Fan muvaffaqiyatli yangilandi!");
+                dispatch(getAllScience({ limit, offset }));
+            })
+                .catch(() => {
+                    toast.error("Xatolik yuz berdi, fan yangilanmadi.");
+                });
+        } else {
+            dispatch(addSciences(formData)).then(() => {
+                toast.success("Fan muvaffaqiyatli qo'shildi!");
+                dispatch(getAllScience({ limit, offset }));
+            })
+                .catch(() => {
+                    toast.error("Xatolik yuz berdi, fan qo'shilmadi.");
+                });
+        }
         handleCloseModal();
     };
+
     const handlePageChange = (newPage) => {
         dispatch(setPage(newPage));
     };
+
     return (
         <Home>
             <div className="addTeacher">
@@ -75,14 +120,16 @@ const AddScience = () => {
                     handleSubmit={handleSubmit}
                     handleChange={handleChange}
                     formData={formData}
-                    teacherData = {teacher || []}
-                    groupsData={ allGroups || []}
+                    teacherData={teacher || []}
+                    groupsData={allGroups || []}
                 />
                 {status === 'loading' && <p>Loading...</p>}
                 {status === 'succeeded' && <TableScience
-                    data={sciences || []}
-                    teacherData = {teacher || []}
-                    groupsData={ allGroups || []}
+                    data={scienceList || []}
+                    handleDelete={handleDelete}
+                    handleEdit={handleEdit} // Pass the handleEdit function to TableScience
+                    teacherData={teacher || []}
+                    groupsData={allGroups || []}
                 />}
                 {status === 'failed' && <p>{error}</p>}
                 <div className="pagination-container">
@@ -102,6 +149,7 @@ const AddScience = () => {
                     </button>
                 </div>
             </div>
+            <ToastContainer />
         </Home>
     );
 };

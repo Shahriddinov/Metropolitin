@@ -4,13 +4,13 @@ import React, { useEffect } from 'react';
 import "./personalInformation.scss";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getStudent } from "../../redux/getStudentSlice/getStudentSlice";
+import { getStudent } from "../../redux/StudentSlice";
 
 import avatarIcon from "../../assets/images/avatar-icon.png"; // Path to your avatar icon image
 
 const PersonalInformation = () => {
     const dispatch = useDispatch();
-    const { students, limit, offset } = useSelector((state) => state.AllStudent);
+    const { students, limit, offset } = useSelector((state) => state.StudentSlice);
 
     useEffect(() => {
         const userID = localStorage.getItem('userID');
@@ -28,7 +28,7 @@ const PersonalInformation = () => {
                 <div className="blur">
                     <div className="personal_head">
                         <Link style={{ textDecoration: "none", color: "#8D8484" }} to="/about">
-                            <div className="personal_head_homes">Bosh saxifaga qaytish</div>
+                            <div className="personal_head_homes">Bosh sahifaga qaytish</div>
                         </Link>
                     </div>
                     <div className="personal_infos">
@@ -51,7 +51,6 @@ const PersonalInformation = () => {
                                     <div className="personal_infos_InfoCard_shows_self_NTitle">Jinsi</div>
                                     <div className="personal_infos_InfoCard_shows_self_NTitle">Manzil</div>
                                     <div className="personal_infos_InfoCard_shows_self_NTitle">Guruhi</div>
-                                    {/*<div className="personal_infos_InfoCard_shows_self_NTitle">O'qituvchi</div>*/}
                                 </div>
                                 <div className="personal_infos_InfoCard_shows_self">
                                     {loggedInStudent && (
@@ -61,7 +60,6 @@ const PersonalInformation = () => {
                                             <div className="personal_infos_InfoCard_shows_self_NTitle">{loggedInStudent.gender}</div>
                                             <div className="personal_infos_InfoCard_shows_self_NTitle">{loggedInStudent.adress}</div>
                                             <div className="personal_infos_InfoCard_shows_self_NTitle">{loggedInStudent.group.name}</div>
-                                            {/*<div className="personal_infos_InfoCard_shows_self_NTitle">{getTeacherName(loggedInStudent.teacher)}</div>*/}
                                         </>
                                     )}
                                 </div>

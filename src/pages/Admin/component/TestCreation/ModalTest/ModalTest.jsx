@@ -1,49 +1,88 @@
 import React from 'react';
 import './modalTest.scss';
 
-const ModalTest = ({onClose}) => {
+const ModalTest = ({ show, handleClose, handleSubmit, handleChange, formData, scienceData }) => {
+    if (!show) {
+        return null;
+    }
+
     return (
         <div className="modal-overlay">
             <div className="modal-content">
-                <button className="close-button" onClick={onClose}>×</button>
-                <form className="settings-form">
+                <button className="close-button" onClick={handleClose}>&times;</button>
+                <form className="settings-form" onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label>Test nomi:</label>
-                        <input type="text" placeholder="Test nomi....."/>
+                        <input
+                            type="text"
+                            name="title"
+                            value={formData.title}
+                            placeholder="Test nomi....."
+                            onChange={handleChange}
+                        />
                     </div>
+                    <div className="form-row">
+                        <div className="form-group">
+                            <label>Fanlar:</label>
+                            <select
+                                name="course"
+                                value={formData.course}
+                                onChange={handleChange}
+                                style={{ padding: "7px", width: "100%" }}
+                                required
+                            >
+                                <option value="" disabled>Tanlang</option>
+                                {scienceData && scienceData.map((science) => (
+                                    <option key={science.id} value={science.id}>{science.name}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+
                     <div className="form-group">
-                        <label>Guruh:</label>
-                        <input type="text" placeholder="Guruh"/>
+                        <label>Test topshirish soni:</label>
+                        <input
+                            type="number"
+                            name="total_question_count"
+                            placeholder="00"
+                            value={formData.total_question_count}
+                            onChange={handleChange}
+                        />
                     </div>
+
                     <div className="form-group">
-                        <label>Savol tartibi:</label>
-                        <input type="text" placeholder="Savol tartibi"/>
+                        <label>Test davomiyligi (daqiqalarda):</label>
+                        <input
+                            type="number"
+                            name="duration"
+                            placeholder="0"
+                            value={formData.duration}
+                            onChange={handleChange}
+                        />
                     </div>
-                    <div className="form-group">
-                        <label>Javob tartibi:</label>
-                        <input type="text" placeholder="Javob tartibi"/>
-                    </div>
-                    <div className="form-group">
-                        <label>Savollar chegarasi:</label>
-                        <input type="number" placeholder="00"/>
-                    </div>
-                    <div className="form-group">
-                        <label>Test davomiyligi:</label>
-                        <input type="time" placeholder="00.00.00"/>
-                    </div>
-                    <div className="form-group">
-                        <label>Boshlanish sanasi:</label>
-                        <input type="date" placeholder="00/00/2024"/>
-                    </div>
+
                     <div className="form-group">
                         <label>Tugash sanasi:</label>
-
-                        <input type="date" placeholder="00/00/2024"/>
+                        <input
+                            type="datetime-local"
+                            name="deadline"
+                            placeholder="2024-08-08T14:30"
+                            value={formData.deadline}
+                            onChange={handleChange}
+                        />
                     </div>
+
                     <div className="form-group">
                         <label>O'tish bal:</label>
-                        <input type="text" placeholder="60%"/>
+                        <input
+                            type="text"
+                            name="required_score_to_pass"
+                            placeholder="60%"
+                            value={formData.required_score_to_pass}
+                            onChange={handleChange}
+                        />
                     </div>
+
                     <button type="submit" className="save-button">Saqlash</button>
                 </form>
             </div>

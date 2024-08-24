@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 
 import { Spinner, Layout } from "components";
 import ScrollTop from "./hoc/ScrollTop";
@@ -13,7 +13,6 @@ const Science = lazy(() => import("./pages/Science/Science"));
 const Homework = lazy(() => import("./pages/Homework/Homework"));
 const PersonalInformation = lazy(() => import("./pages/PersonalInformation/PersonalInformation"));
 const Library = lazy(() => import("./pages/Library/Library"));
-const StudyGuide = lazy(() => import("./pages/Library/component/StudyGuide/StudyGuide"));
 const FinalTest = lazy(() => import("./pages/FinalTest/FinalTest"));
 
 const TeacherAbout = lazy(() => import("./pages/TeacherAdmin/components/TeacherAbout/TeacherAbout"));
@@ -39,7 +38,6 @@ const routes = [
 	{ path: "homework", element: Homework, role: "student" },
 	{ path: "personal", element: PersonalInformation, role: "student" },
 	{ path: "library", element: Library, role: "student" },
-	{ path: "library/guide", element: StudyGuide, role: "student" },
 	{ path: "test", element: FinalTest, role: "student" },
 
 	{ path: "teacher/about", element: TeacherAbout, role:'teacher' },

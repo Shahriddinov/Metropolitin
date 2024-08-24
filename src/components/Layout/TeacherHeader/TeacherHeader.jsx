@@ -35,11 +35,9 @@ const TeacherHeader = () => {
                         <Link to="/teacher/science">
                             <li className="header_navbar_nav">FANLAR</li>
                         </Link>
-                        {/*<Link to="/library">*/}
-                        {/*    <li className="header_navbar_nav">KUTUBXONA</li>*/}
-                        {/*</Link>*/}
+
                         <Link to="/test">
-                            <li className="header_navbar_nav">YANKUNIY TEST</li>
+                            <li className="header_navbar_nav">YAKUNIY TEST</li>
                         </Link>
                     </ul>
                     {isMobile && (

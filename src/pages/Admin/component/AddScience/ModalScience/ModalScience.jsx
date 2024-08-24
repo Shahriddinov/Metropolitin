@@ -44,6 +44,9 @@ const ModalScience = ({ show, handleClose, handleSubmit, handleChange, formData,
                                 <label>Mashg'ulot</label>
                                 <input type="text" name="training" value={formData.training} onChange={handleChange} required />
                             </div>
+
+                        </div>
+                        <div className="form-row">
                             <div className="form-group">
                                 <label>Guruhi</label>
                                 <select name="group" value={formData.group} onChange={handleChange} style={{ padding: "7px" }} required>

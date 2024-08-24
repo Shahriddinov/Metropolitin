@@ -1,9 +1,15 @@
 import React from 'react';
 
-const ModalSchedule = ({show, handleClose, handleSubmit, handleChange, formData, teacherData, groupsData, scienceData}) => {
+const ModalSchedule = ({ show, handleClose, handleSubmit, handleChange, formData, teacherData, groupsData, scienceData }) => {
     if (!show) {
         return null;
     }
+
+    const timeOptions = [
+        "08:00", "08:30", "09:30", "10:00", "11:00",
+        "11:30", "12:30", "13:00", "14:30", "16:00"
+    ];
+
     return (
         <div className="modal">
             <div className="modal-content">
@@ -14,12 +20,9 @@ const ModalSchedule = ({show, handleClose, handleSubmit, handleChange, formData,
                 <div className="modal-body">
                     <form onSubmit={handleSubmit}>
                         <div className="form-row">
-
                             <div className="form-group">
                                 <label>Dars sanasi:</label>
-                                <input type="date" name="day" placeholder="YYYY-MM-DD"
-                                       value={formData.day} onChange={handleChange}
-                                       required/>
+                                <input type="date" name="day" placeholder="YYYY-MM-DD" value={formData.day} onChange={handleChange} required />
                             </div>
                             <div className="form-group">
                                 <label>Fanlar:</label>
@@ -29,11 +32,9 @@ const ModalSchedule = ({show, handleClose, handleSubmit, handleChange, formData,
                                         <option key={science.id} value={science.id}>{science.name}</option>
                                     ))}
                                 </select>
-
                             </div>
                         </div>
                         <div className="form-row">
-
                             <div className="form-group">
                                 <label>Xodim:</label>
                                 <select name="teacher" value={formData.teacher} onChange={handleChange} style={{ padding: "7px" }} required>
@@ -48,22 +49,29 @@ const ModalSchedule = ({show, handleClose, handleSubmit, handleChange, formData,
                                 <select name="group" value={formData.group} onChange={handleChange} style={{ padding: "7px" }} required>
                                     <option value="" disabled>Tanlang</option>
                                     {groupsData && groupsData.map((groups) => (
-                                        <option key={groups.id} value={groups?.id}>{groups?.name}</option>
+                                        <option key={groups.id} value={groups.id}>{groups.name}</option>
                                     ))}
                                 </select>
                             </div>
                         </div>
                         <div className="form-row">
-
                             <div className="form-group">
                                 <label>Juftlik boshlanish:</label>
-                                <input type="time" name="start_time" placeholder="YYYY-MM-DD" value={formData.start_time} onChange={handleChange}
-                                       required/>
+                                <select name="start_time" value={formData.start_time} onChange={handleChange} style={{ padding: "7px" }} required>
+                                    <option value="" disabled>Tanlang</option>
+                                    {timeOptions.map(time => (
+                                        <option key={time} value={time}>{time}</option>
+                                    ))}
+                                </select>
                             </div>
                             <div className="form-group">
                                 <label>Juftlik tugashi:</label>
-                                <input type="time" name="end_time" placeholder="YYYY-MM-DD" value={formData.end_time} onChange={handleChange}
-                                       required/>
+                                <select name="end_time" value={formData.end_time} onChange={handleChange} style={{ padding: "7px" }} required>
+                                    <option value="" disabled>Tanlang</option>
+                                    {timeOptions.map(time => (
+                                        <option key={time} value={time}>{time}</option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
                         <div className="form-group form-submit">

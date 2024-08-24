@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import "./teacherSchedule.scss"
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {getScheduleAll} from "../../../../redux/getScheduleSlice";
+import {getScheduleAll} from "../../../../redux/ScheduleSlice";
 const formatTime = (timeString) => {
     if (!timeString) return '';
     return timeString.slice(0, 5);
@@ -11,7 +11,7 @@ const formatTime = (timeString) => {
 const TeacherSchedule = () => {
 
     const dispatch = useDispatch();
-    const { schedules } = useSelector((state) => state.allSchedule);
+    const { schedules } = useSelector((state) => state.ScheduleSlice);
     const [filteredSchedule, setFilteredSchedule] = useState([]);
 
     const loggedInGroupId = localStorage.getItem('groupID');
@@ -50,7 +50,7 @@ const TeacherSchedule = () => {
                         <div>Dars jadvali</div>
                         <div className="schedule_tables_class_weeks">Haftalik</div>
                         <Link style={{ textDecoration: "none", color: "#8D8484" }} to="/teacher/about">
-                            <div className="schedule_tables_class_weeks">Bosh saxifaga qaytish</div>
+                            <div className="schedule_tables_class_weeks">Bosh sahifaga qaytish</div>
                         </Link>
                     </div>
                     <table border="1" className="tabless">

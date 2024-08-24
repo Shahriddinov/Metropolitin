@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import "./teacherHomework.scss";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getTask } from "../../../../redux/getHomeworkSlice/getHomeworkSlice";
+import { getTask } from "../../../../redux/HomeworkSlice";
 
 const TeacherHomework = () => {
     const dispatch = useDispatch();
-    const { homework, limit, offset } = useSelector((state) => state.getHomeworkSlice);
+    const { homework, limit, offset } = useSelector((state) => state.HomeworkSlice);
 
     const location = useLocation();
     const { scienceId, scienceName, group, training } = location.state || {};
