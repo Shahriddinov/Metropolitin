@@ -11,6 +11,7 @@ const TableDocuments = ({data, handleDelete, handleEdit}) => {
             <table className="table_container-Ttabel">
                 <thead>
                 <tr>
+                    <th className="table_container_Ttabel_Tth">N</th>
                     <th className="table_container_Ttabel_Tth">Buyruq raqami</th>
                     <th className="table_container_Ttabel_Tth">Buyruq sanasi</th>
                     <th className="table_container_Ttabel_Tth">Fayl yuklash</th>
@@ -22,6 +23,7 @@ const TableDocuments = ({data, handleDelete, handleEdit}) => {
                 <tbody>
                 {data.map((item, index) => (
                     <tr key={index}>
+                        <td className="table_container_Ttabel_Ttd">{index+ 1}</td>
                         <td className="table_container_Ttabel_Ttd">{item.command_number}</td>
                         <td className="table_container_Ttabel_Ttd">{item.order_date}</td>
                         <td className="table_container_Ttabel_Ttd">

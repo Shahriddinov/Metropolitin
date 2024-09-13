@@ -8,6 +8,11 @@
 }
 
 .content {
+  width: 82%;
+  height: 92.7vh;
   flex-grow: 1;
+  border: 1px solid red;
+  margin-top: 50px;
+  overflow-y:scroll ;
   padding: 20px;
 }

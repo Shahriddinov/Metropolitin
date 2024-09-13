@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 // Assuming you have these thunks defined somewhere
-import { addLibrary, deleteLibrary, updateLibrary, getLibrary, getLibraryAll } from './index';
+import { addLibrary, deleteLibrary, updateLibrary,  getLibraryAll } from './index';
 
 // Initial State
 const initialState = {
@@ -77,18 +77,7 @@ const librarySlice = createSlice({
                 state.error = action.payload;
             })
 
-            // Get Library Cases
-            .addCase(getLibrary.pending, (state) => {
-                state.status = 'loading';
-            })
-            .addCase(getLibrary.fulfilled, (state, action) => {
-                state.status = 'succeeded';
-                state.libraryItems = action.payload.results;
-            })
-            .addCase(getLibrary.rejected, (state, action) => {
-                state.status = 'failed';
-                state.error = action.error.message || 'Failed to fetch library';
-            })
+
 
             // Get All Libraries Cases
             .addCase(getLibraryAll.pending, (state) => {

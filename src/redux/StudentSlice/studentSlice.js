@@ -14,7 +14,7 @@ const initialState = {
     error: null,            // General error state
     limit: 10,              // Pagination limit
     offset: 0,             // Pagination offset
-    page: 1,               // Pagination page
+
 };
 
 const studentSlice = createSlice({

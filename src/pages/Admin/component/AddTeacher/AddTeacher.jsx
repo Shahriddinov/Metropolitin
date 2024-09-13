@@ -85,41 +85,31 @@ const AddTeacher = () => {
 
     const handleChange = (e) => {
         const { name, value, files } = e.target;
+        let formattedValue = value;
 
         if (name === 'passport') {
-            // Format passport value
-            const formattedValue = value
-                .toUpperCase()
-                .replace(/[^A-Z0-9]/g, '')
-                .replace(/^([A-Z]{0,2})([0-9]{0,7})$/, '$1$2');
-
-            setFormData(prevState => ({
-                ...prevState,
-                passport: formattedValue
-            }));
+            formattedValue = formattedValue.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            const regex = /^([A-Z]{0,2})([0-9]{0,7})$/;
+            const match = formattedValue.match(regex);
+            if (match) {
+                formattedValue = `${match[1]}${match[2]}`;
+            } else {
+                formattedValue = formData.passport;
+            }
         } else if (name === 'jshshr') {
-            // Format jshshr value
-            const formattedValue = value
-                .replace(/[^0-9]/g, '')
-                .slice(0, 14);
-
-            setFormData(prevState => ({
-                ...prevState,
-                jshshr: formattedValue
-            }));
-        } else if (name === 'avatar' && files) {
-            // Handle file input
-            setFormData(prevState => ({
-                ...prevState,
-                avatar: files[0] // Ensure this is a File object
-            }));
-        } else {
-            // Handle other fields
-            setFormData(prevState => ({
-                ...prevState,
-                [name]: value
-            }));
+            formattedValue = formattedValue.replace(/[^0-9]/g, '').slice(0, 14);
+        } else if (name === 'avatar') {
+            setFormData({
+                ...formData,
+                [name]: files[0],
+            });
+            return;
         }
+
+        setFormData({
+            ...formData,
+            [name]: formattedValue,
+        });
     };
 
 

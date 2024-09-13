@@ -33,9 +33,9 @@ const AddSchedule = () => {
         page,
         postSchedule,
     } = useSelector((state) => state.ScheduleSlice); // Accessing the combined schedule state
-    const { teacher } = useSelector((state) => state.TeacherSlice);
+    const { teachers } = useSelector((state) => state.TeacherSlice);
     const { allGroups } = useSelector((state) => state.GroupSlice);
-    const { science } = useSelector((state) => state.ScienceSlice);
+    const { scienceList } = useSelector((state) => state.ScienceSlice);
 
     const [showModal, setShowModal] = useState(false);
     const handleShowModal = () => setShowModal(true);
@@ -141,9 +141,9 @@ const AddSchedule = () => {
                     handleSubmit={handleSubmit}
                     handleChange={handleChange}
                     formData={formData}
-                    teacherData={teacher || []}
+                    teacherData={teachers || []}
                     groupsData={allGroups || []}
-                    scienceData={science || []}
+                    scienceData={scienceList || []}
                 />
                 {status === 'loading' && <p>Loading...</p>}
                 {status === 'succeeded' && (

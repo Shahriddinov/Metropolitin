@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Home from '../Home/Home';
 import './addLibrary.scss';
-import { addLibrary, deleteLibrary, getLibrary, updateLibrary } from '../../../../redux/LibrarySlice';
+import {addLibrary, deleteLibrary,  getLibraryAll, updateLibrary} from '../../../../redux/LibrarySlice';
 import { Spinner } from '../../../../components';
 import ModalLibrary from "./ModalLibrary/ModalLibrary";
 import Book from "../../../../assets/images/books.png";
@@ -16,7 +16,7 @@ const AddLibrary = () => {
     const [selectedLibraryId, setSelectedLibraryId] = useState(null);
     const [showModal, setShowModal] = useState(false);
 
-    const { libraryItems, limit, offset, status, error } = useSelector((state) => state.LibrarySlice); // Correct state path
+    const { libraryItems,  status, error } = useSelector((state) => state.LibrarySlice); // Correct state path
 
     const [formData, setFormData] = useState({
         name: '',
@@ -34,8 +34,8 @@ const AddLibrary = () => {
     };
 
     useEffect(() => {
-        dispatch(getLibrary({ limit, offset }));
-    }, [limit, offset, dispatch]);
+        dispatch(getLibraryAll());
+    }, [ dispatch]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -48,7 +48,7 @@ const AddLibrary = () => {
                 toast.success("Kitob muvaffaqiyatli qo'shildi!");
             }
 
-            dispatch(getLibrary({ limit, offset }));
+            dispatch(getLibraryAll());
             handleCloseModal();
         } catch (error) {
             toast.error(editMode ? "Xatolik yuz berdi, kitob yangilanmadi." : "Xatolik yuz berdi, kitob qo'shilmadi.");
@@ -83,7 +83,7 @@ const AddLibrary = () => {
             } else if (action.meta.requestStatus === 'rejected') {
                 toast.error("Error occurred while deleting the book.");
             }
-            dispatch(getLibrary({ limit, offset }));
+            dispatch(getLibraryAll());
         });
     };
 
@@ -133,7 +133,8 @@ const AddLibrary = () => {
                                     />
                                 </div>
                             </div>
-                            <p>{file.name}</p>
+
+                            <p>{index+1}) {file.name}</p>
                             <a href={file.file} target="_blank" download={file.title}>Yuklab olish</a>
                         </div>
                     ))}

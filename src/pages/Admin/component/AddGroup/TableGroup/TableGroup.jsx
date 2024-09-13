@@ -7,6 +7,7 @@ function TableGroup({data, handleDelete, handleEdit}) {
             <table className="table_container-Ttabel">
                 <thead>
                 <tr>
+                    <th className="table_container_Ttabel_Tth">N</th>
                     <th className="table_container_Ttabel_Tth">Guruh</th>
                     <th className="table_container_Ttabel_Tth">O'quv yili</th>
                     <th className="table_container_Ttabel_Tth">Malaka oshirish uchun soat</th>
@@ -17,6 +18,7 @@ function TableGroup({data, handleDelete, handleEdit}) {
                 <tbody>
                 {data.map((item, index) => (
                     <tr key={index}>
+                        <td className="table_container_Ttabel_Ttd">{index+1}</td>
                         <td className="table_container_Ttabel_Ttd">{item.name}</td>
                         <td className="table_container_Ttabel_Ttd">{item.study_period}</td>
                         <td className="table_container_Ttabel_Ttd">{item.training_hour}</td>

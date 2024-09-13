@@ -28,6 +28,7 @@
       font-size: 18px;
       font-weight: 400;
       color: #8D8484;
+      margin-bottom: 40px;
       &_weeks{
         border: 1px solid black;
         background: white;
@@ -35,7 +36,44 @@
       }
 
     }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
 
+    th {
+      background-color: #f2f2f2;
+    }
+
+    td {
+      vertical-align: middle;
+      font-size: 12px;
+    }
+
+    .blue {
+      background-color: #3a99d8;
+      color: white;
+    }
+
+    .yellow {
+      background-color: #f3d13a;
+      color: black;
+    }
+
+    .green {
+      background-color: #68b547;
+      color: white;
+    }
+
+    .lightgreen {
+      background-color: #c0e0b7;
+      color: black;
+    }
+
+    .red {
+      background-color: #f25a5a;
+      color: white;
+    }
   }
 }
 

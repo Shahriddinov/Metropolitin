@@ -19,7 +19,7 @@ const AddScience = () => {
     const dispatch = useDispatch();
     const scienceData = useSelector((state) => state.ScienceSlice.postScience);
     const { scienceList, limit, offset, page, status, error } = useSelector((state) => state.ScienceSlice);
-    const { teacher } = useSelector((state) => state.TeacherSlice);
+    const { teachers } = useSelector((state) => state.TeacherSlice);
     const { allGroups } = useSelector((state) => state.GroupSlice);
 
     const [formData, setFormData] = useState({
@@ -120,7 +120,7 @@ const AddScience = () => {
                     handleSubmit={handleSubmit}
                     handleChange={handleChange}
                     formData={formData}
-                    teacherData={teacher || []}
+                    teacherData={teachers || []}
                     groupsData={allGroups || []}
                 />
                 {status === 'loading' && <p>Loading...</p>}
@@ -128,7 +128,7 @@ const AddScience = () => {
                     data={scienceList || []}
                     handleDelete={handleDelete}
                     handleEdit={handleEdit} // Pass the handleEdit function to TableScience
-                    teacherData={teacher || []}
+                    teacherData={teachers || []}
                     groupsData={allGroups || []}
                 />}
                 {status === 'failed' && <p>{error}</p>}

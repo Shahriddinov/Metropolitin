@@ -38,8 +38,8 @@ export const updateStudent = createAsyncThunk(
 );
 export const getStudent = createAsyncThunk('students/allStudent', async (params, thunkAPI) => {
     try {
-        const { limit, offset, page, fullname = ''  } = params;
-        const response = await axios.get(`${GET_STUDENT_LIST}?limit=${limit}&offset=${offset}&page=${page}&fullname=${fullname || ''}`, {
+
+        const response = await axios.get(`${GET_STUDENT_LIST}`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',

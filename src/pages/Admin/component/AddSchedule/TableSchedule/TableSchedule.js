@@ -12,6 +12,7 @@ const TableSchedule = ({data, handleDelete, handleEdit}) => {
                 <table>
                     <thead>
                     <tr>
+                        <th>N</th>
                         <th>Dars sanasi</th>
                         <th>Juftlik</th>
                         <th>Fanlar</th>
@@ -24,6 +25,7 @@ const TableSchedule = ({data, handleDelete, handleEdit}) => {
                     <tbody>
                     {data.map((item, index) => (
                         <tr key={index}>
+                            <td>{index+1}</td>
                             <td>{item.day}</td>
                             <td>{item.start_time} && {item.end_time} </td>
                             <td>{item?.course?.name}</td>
