@@ -29,7 +29,7 @@ const Library = () => {
                             {libraryItems.map((item, index) => (
                                 <div key={index} className="library_bookCard_BookNames">
                                     <img className="library_bookCard_BookNames_bookImg" src={Book} alt=""/>
-                                    <span className="library_bookCard_BookNames_NN">{item.name}</span>
+                                    <span className="library_bookCard_BookNames_NN">{index+1}) {item.name}</span>
                                     {/*<a href={file.file} target="_blank" download={file.title}>Yuklab olish</a>*/}
                                   <a href={item.file} target="_blank" download={item.title} className="library_bookCard_BookNames_seemBook">Kitoblar</a>
                                 </div>

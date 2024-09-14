@@ -11,7 +11,6 @@ export const login = createAsyncThunk('auth/login', async ({ passport, password 
             localStorage.setItem('refreshToken', refresh);
             localStorage.setItem('userID', data.id);
             localStorage.setItem('groupID', data.group);
-            console.log(localStorage.getItem('userID', data.id))
             return { access, refresh, user: data };
         } else {
             throw new Error('User ID not found in response data');

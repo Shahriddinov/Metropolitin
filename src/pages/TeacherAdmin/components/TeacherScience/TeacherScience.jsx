@@ -77,7 +77,7 @@ const TeacherScience = () => {
     const getHomeworkCount = (scienceId) => {
         return homework.filter(hw => hw.course === scienceId).length;
     };
-
+console.log(scienceList)
     return (
         <div className="backgroundPage">
             <div style={{ padding: "20px 60px" }}>
@@ -102,7 +102,7 @@ const TeacherScience = () => {
                             {scienceList.map((row) => (
                                 <tr key={row.id} onClick={() => handleShowModal(row)}>
                                     <td className="science_liness_items">{row.name}</td>
-                                    <td className="science_liness_items">{row.group}</td>
+                                    <td className="science_liness_items">{row.group.name}</td>
                                     <td className="science_liness_items">{row.training}</td>
                                     <td className="science_liness_items">
                                         <Link

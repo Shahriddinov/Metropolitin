@@ -9,7 +9,7 @@ const initialState = {
     libraryItems: [],
     library: null,
     updateLibrary: null,
-    limit: 2,
+    limit: 30,
     offset: 0,
     page: 1,
     status: 'idle',

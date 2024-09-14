@@ -23,7 +23,6 @@ const TeacherSchedule = () => {
     const { schedules } = useSelector((state) => state.ScheduleSlice);
     const [filteredSchedule, setFilteredSchedule] = useState([]);
     const loggedInUserId = localStorage.getItem('userID'); // LocalStorage'dan userID'ni olish
-console.log(schedules)
     useEffect(() => {
         dispatch(getScheduleAll());
     }, [dispatch]);

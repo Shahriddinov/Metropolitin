@@ -68,7 +68,7 @@ const ClassSchedule = () => {
                     <div className="schedule_tables_class">
                         <div>Dars jadvali</div>
                         <div className="schedule_tables_class_weeks">Haftalik</div>
-                        <Link style={{ textDecoration: 'none', color: '#8D8484' }} to="/teacher/about">
+                        <Link style={{ textDecoration: 'none', color: '#8D8484' }} to="/about">
                             <div className="schedule_tables_class_weeks">Bosh sahifaga qaytish</div>
                         </Link>
                     </div>

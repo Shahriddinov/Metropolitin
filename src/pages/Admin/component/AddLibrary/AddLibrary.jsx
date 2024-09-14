@@ -9,14 +9,14 @@ import Book from "../../../../assets/images/books.png";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {setPage} from "../../../../redux/TeacherSlice/teacherSlice";
 
 const AddLibrary = () => {
     const dispatch = useDispatch();
     const [editMode, setEditMode] = useState(false);
     const [selectedLibraryId, setSelectedLibraryId] = useState(null);
     const [showModal, setShowModal] = useState(false);
-
-    const { libraryItems,  status, error } = useSelector((state) => state.LibrarySlice); // Correct state path
+    const { libraryItems,  status, error, limit, offset, page, } = useSelector((state) => state.LibrarySlice); // Correct state path
 
     const [formData, setFormData] = useState({
         name: '',
@@ -34,9 +34,8 @@ const AddLibrary = () => {
     };
 
     useEffect(() => {
-        dispatch(getLibraryAll());
-    }, [ dispatch]);
-
+        dispatch(getLibraryAll({ limit, offset }));
+    }, [dispatch, limit, offset]);
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -98,7 +97,12 @@ const AddLibrary = () => {
         });
         handleShowModal();
     };
-
+    const handlePageChange = (newPage) => {
+        if (newPage > 0) {
+            dispatch(setPage(newPage));  // This will trigger the update to page and offset
+            dispatch(getLibraryAll({ limit, offset: (newPage - 1) * limit }));  // Fetch new data based on the new page
+        }
+    };
     return (
         <Home>
             <div className="addTeacher">
@@ -138,6 +142,23 @@ const AddLibrary = () => {
                             <a href={file.file} target="_blank" download={file.title}>Yuklab olish</a>
                         </div>
                     ))}
+                </div>
+                <div className="pagination-container">
+                    <button
+                        className="pagination-button"
+                        disabled={page === 1}
+                        onClick={() => handlePageChange(page - 1)}
+                    >
+                        Previous
+                    </button>
+                    <span className="pagination-page">Page {page}</span>
+                    <button
+                        className="pagination-button"
+
+                        onClick={() => handlePageChange(page + 1)}
+                    >
+                        Next
+                    </button>
                 </div>
             </div>
             <ToastContainer />

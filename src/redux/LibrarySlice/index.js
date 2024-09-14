@@ -80,8 +80,8 @@ export const updateLibrary = createAsyncThunk(
 
 export const getLibraryAll = createAsyncThunk('getLibraryAll', async (params, thunkAPI) => {
     try {
-
-        const response = await axios.get(GET_LIBRARY_LIST, {
+        const { limit, offset, } = params;
+        const response = await axios.get(`${GET_LIBRARY_LIST}?limit=${limit}&offset=${offset}`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
