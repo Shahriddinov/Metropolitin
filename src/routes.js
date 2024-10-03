@@ -13,13 +13,16 @@ const Science = lazy(() => import("./pages/Science/Science"));
 const Homework = lazy(() => import("./pages/Homework/Homework"));
 const PersonalInformation = lazy(() => import("./pages/PersonalInformation/PersonalInformation"));
 const Library = lazy(() => import("./pages/Library/Library"));
-const FinalTest = lazy(() => import("./pages/FinalTest/FinalTest"));
+const FinalTest = lazy(() => import("./pages/TestSolution/FinalTest/FinalTest"));
+const TestSolution = lazy(() => import("./pages/TestSolution/testSolution"));
 
 const TeacherAbout = lazy(() => import("./pages/TeacherAdmin/components/TeacherAbout/TeacherAbout"));
 const TeacherPersonal = lazy(() => import("./pages/TeacherAdmin/components/TeacherInformation/TeacherInformation"));
 const TeacherSchedule = lazy(() => import("./pages/TeacherAdmin/components/TeacherSchedule/TeacherSchedule"));
 const TeacherScience = lazy(() => import("./pages/TeacherAdmin/components/TeacherScience/TeacherScience"));
 const TeacherHomework = lazy(() => import("./pages/TeacherAdmin/components/TeacherHomework/TeacherHomework"));
+const TeacherTest = lazy(() => import("./pages/TeacherAdmin/components/TeacherTest/teacherTest"));
+const TeacherDoneTest = lazy(() => import("./pages/TeacherAdmin/components/TestDoneStudents/TestDoneStudents"));
 
 const AdminHome = lazy(() => import("./pages/Admin/component/Home/Home"));
 const AddTeacher = lazy(() => import("./pages/Admin/component/AddTeacher/AddTeacher"));
@@ -38,13 +41,16 @@ const routes = [
 	{ path: "homework", element: Homework, role: "student" },
 	{ path: "personal", element: PersonalInformation, role: "student" },
 	{ path: "library", element: Library, role: "student" },
-	{ path: "test", element: FinalTest, role: "student" },
+	{ path: "testSolution", element: TestSolution, role: "student" },
+	{ path: "testSolution/final", element: FinalTest, role: "student" },
 
 	{ path: "teacher/about", element: TeacherAbout, role:'teacher' },
 	{ path: "teacher/personal", element: TeacherPersonal, role:'teacher' },
 	{ path: "teacher/schedule", element: TeacherSchedule, role:'teacher' },
 	{ path: "teacher/science", element: TeacherScience, role:'teacher' },
 	{ path: "teacher/homework", element: TeacherHomework, role:'teacher' },
+	{ path: "teacher/test", element: TeacherTest, role:'teacher' },
+	{ path: "teacher/doneStudent", element: TeacherDoneTest, role:'teacher' },
 
 	{ path: "admin/home/*", element: AdminHome, role: "admin" },
 	{ path: "admin/addTeacher", element: AddTeacher, role: "admin" },

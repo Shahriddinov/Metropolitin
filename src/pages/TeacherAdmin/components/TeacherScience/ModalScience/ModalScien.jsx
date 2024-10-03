@@ -1,12 +1,12 @@
 import React from 'react';
 import "./modalScien.scss";
 
-const ModalScience = ({ data, show, handleClose, handleSubmit, handleChange, handleFileChange, scienceData, setSelectedScience }) => {
+const ModalScience = ({ data, show, handleClose, handleSubmit, handleChange, handleFileChange, allGroups, setSelectedScience }) => {
     if (!data) return null;
     if (!show) return null;
 
     const handleScienceChange = (e) => {
-        const selectedScience = scienceData.find(science => science.id === parseInt(e.target.value));
+        const selectedScience = allGroups.find(group => group.id === parseInt(e.target.value));
         setSelectedScience(selectedScience);
         handleChange(e);  // Also update the form data
     };
@@ -31,8 +31,8 @@ const ModalScience = ({ data, show, handleClose, handleSubmit, handleChange, han
                         <label>Guruh</label>
                         <select name="course" value={data.course} onChange={handleScienceChange} style={{ padding: "7px" }} required>
                             <option value="" disabled>Tanlang</option>
-                            {scienceData && scienceData.map((science) => (
-                                <option key={science.id} value={science.id}>{science.name}</option>
+                            {allGroups && allGroups.map((group) => (
+                                <option key={group.id} value={group.id}>{group.name}</option>
                             ))}
                         </select>
                         <label htmlFor="upload">Topshiriqni yuklash

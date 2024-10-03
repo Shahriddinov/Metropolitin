@@ -1,55 +1,19 @@
-import React, { useState } from 'react';
-import { FaTrashAlt } from 'react-icons/fa';
+import React from 'react';
 import './settingTest.scss';
-import {useDispatch} from "react-redux";
-import {quizQuestionCreate} from "../../../../../redux/QuizQuestionSlice";
 
-const SettingTest = ({ question, onSave, onClose }) => {
-    const [isMultipleChoice, setIsMultipleChoice] = useState(true);
-    const dispatch = useDispatch();
-
-    const [formData, setFormData] = useState({
-        title: "",
-        technique: '0',  // Initialize with default value (0 for multiple-choice)
-        is_active: true,
-        quiz: localStorage.getItem('quizId'),
-        structure: 2
-    });
-console.log(localStorage.getItem('quizId'))
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        dispatch(quizQuestionCreate(formData)).then(() => {
-            // dispatch(getSchedule({limit, offset}));
-        });
-        setFormData({
-            title: "",
-            technique: '0',
-            is_active: true,
-            quiz: localStorage.getItem('quizId'),
-            structure: 2
-        });
-    };
-
-    const handleQuestionTypeChange = (event) => {
-        const isMultiple = event.target.id === 'multiple-choice';
-        setIsMultipleChoice(isMultiple);
-        setFormData({
-            ...formData,
-            technique: isMultiple ? '0' : '1'
-        });
-    };
+const SettingTest = ({
+                         formData,
+                         handleChange,
+                         handleCorrectAnswer,
+                         handleSubmit,
+                         handleQuestionTypeChange,
+                         isMultipleChoice,
+                         onClose
+                     }) => {
 
     return (
         <div className="modal">
-            <div className="modal-content">
+            <form className="modal-content" onSubmit={handleSubmit}>
                 <div className="modal-header">
                     <h2>Savol qo'shish</h2>
                     <span className="close" onClick={onClose}>&times;</span>
@@ -84,32 +48,28 @@ console.log(localStorage.getItem('quizId'))
                         />
                     </div>
                     <div className="options">
-                        {[...Array(4)].map((_, index) => (
+                        {formData.answers.map((answer, index) => (
                             <div className="option" key={index}>
                                 <input
-                                    type={isMultipleChoice ? "checkbox" : "radio"}
-                                    name="options"
-                                    id={`option-${index}`}
+                                    type="text"
+                                    placeholder={`Variant ${index + 1}`}
+                                    value={answer.title}
+                                    onChange={(e) => handleChange(e, index)}
                                 />
-                                <input type="text" placeholder="Variantni kiriting" />
+                                <input
+                                    type={isMultipleChoice ? 'checkbox' : 'radio'}
+                                    checked={answer.is_correct}
+                                    onChange={() => handleCorrectAnswer(index)}
+                                />
+                                <label>To'g'ri javob</label>
                             </div>
                         ))}
                     </div>
-                    <div className="controls">
-                        <div className="mandatory">
-                            <input type="checkbox" id="mandatory" />
-                            <label htmlFor="mandatory">Majburiy savol</label>
-                        </div>
-                        <div className="correct-answer">
-                            <input type="checkbox" id="correct-answer" />
-                            <label htmlFor="correct-answer">To'g'ri javob</label>
-                        </div>
-                    </div>
                 </div>
                 <div className="modal-footer">
-                    <button onClick={handleSubmit}>Saqlash</button>
+                    <button type="submit">Saqlash</button>
                 </div>
-            </div>
+            </form>
         </div>
     );
 };

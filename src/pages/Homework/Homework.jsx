@@ -22,7 +22,7 @@ const Homework = () => {
         const scienceItem = scienceList.find(science => science.id === courseId);
         return scienceItem ? scienceItem.name : 'Unknown';
     };
-
+console.log(homework)
     return (
         <div className="backgroundPage">
             <div style={{ padding: '20px 60px' }}>

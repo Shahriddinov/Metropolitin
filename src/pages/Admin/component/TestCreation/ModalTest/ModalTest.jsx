@@ -1,7 +1,7 @@
 import React from 'react';
 import './modalTest.scss';
 
-const ModalTest = ({ show, handleClose, handleSubmit, handleChange, formData, scienceData }) => {
+const ModalTest = ({ show, handleClose, handleSubmit, handleChange, formData, scienceData, allGroups }) => {
     if (!show) {
         return null;
     }
@@ -22,6 +22,22 @@ const ModalTest = ({ show, handleClose, handleSubmit, handleChange, formData, sc
                         />
                     </div>
                     <div className="form-row">
+                        <div className="form-group">
+                            <label>Guruhlar:</label>
+                            <select
+                                name="group"
+                                value={formData.group}
+                                onChange={handleChange}
+                                style={{ padding: "7px", width: "100%" }}
+                                required
+                            >
+                                <option value="" disabled>Tanlang</option>
+                                {allGroups && allGroups.map((group) => (
+                                    <option key={group.id} value={group.id}>{group.name}</option>
+                                ))}
+
+                            </select>
+                        </div>
                         <div className="form-group">
                             <label>Fanlar:</label>
                             <select
@@ -45,7 +61,7 @@ const ModalTest = ({ show, handleClose, handleSubmit, handleChange, formData, sc
                             type="number"
                             name="total_question_count"
                             placeholder="00"
-                            value={formData.total_question_count}
+                            value={formData.total_question_count || ""}
                             onChange={handleChange}
                         />
                     </div>
@@ -61,6 +77,16 @@ const ModalTest = ({ show, handleClose, handleSubmit, handleChange, formData, sc
                         />
                     </div>
 
+                    <div className="form-group">
+                        <label>Boshlanish sanasi:</label>
+                        <input
+                            type="datetime-local"
+                            name="start"
+                            placeholder="2024-08-08T14:30"
+                            value={formData.start}
+                            onChange={handleChange}
+                        />
+                    </div>
                     <div className="form-group">
                         <label>Tugash sanasi:</label>
                         <input

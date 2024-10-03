@@ -9,6 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
 }
 
 .modal-content {
@@ -19,7 +20,9 @@
   height: 80vh;
   overflow-y: scroll;
   position: relative;
-
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .close-button {

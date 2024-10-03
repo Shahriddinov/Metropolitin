@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { QUIZ_CREATE } from "../../services/api/utilis";
+import {GET_LIBRARY_LIST, QUIZ_CREATE, QUIZ_CREATE_GET} from "../../services/api/utilis";
 
 export const quizCreate = createAsyncThunk(
     "quizCreate",
@@ -21,3 +21,18 @@ export const quizCreate = createAsyncThunk(
         return response.data;
     }
 );
+export const getCreateQuiz = createAsyncThunk('getCreateQuiz', async (params, thunkAPI) => {
+    try {
+
+        const response = await axios.get(QUIZ_CREATE_GET, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.message);
+    }
+});

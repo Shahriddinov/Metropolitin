@@ -1,0 +1,45 @@
+@import "assets/styles/ui";
+.result{
+  &_head{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 400;
+    color: #8D8484;
+    &_homes{
+      border: 1px solid black;
+      background: white;
+      padding: 5px 12px;
+      position: relative;
+    }
+  }
+}
+.custom-modal {
+  position: absolute;
+  top: 37px;  /* Adjust positioning */
+  right: 0px;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+}
+
+.modal-content {
+  padding: 12px;
+
+
+
+  &_dones{
+    width: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+      text-decoration: none;
+    color: black;
+
+  }
+}

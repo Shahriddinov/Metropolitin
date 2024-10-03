@@ -7,6 +7,7 @@ import {IoClose, IoMenu} from "react-icons/io5";
 const Header = () => {
     const [openMenu, setOpenMenu] = useState(false);
     const isMobile = useMediaQuery({maxWidth: "1150px"});
+    const groupID = localStorage.getItem('groupID');
     const toggleChecked = () => {
         setOpenMenu(!openMenu);
     }
@@ -38,7 +39,7 @@ const Header = () => {
                         <Link to="/homework">
                             <li className="header_navbar_nav">VAZIFALAR</li>
                         </Link>
-                        <Link to="/test">
+                        <Link to={`/testSolution?group=${groupID}`}>
                             <li className="header_navbar_nav">YAKUNIY TEST</li>
                         </Link>
                     </ul>

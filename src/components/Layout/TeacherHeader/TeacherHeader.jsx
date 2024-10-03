@@ -36,7 +36,7 @@ const TeacherHeader = () => {
                             <li className="header_navbar_nav">FANLAR</li>
                         </Link>
 
-                        <Link to="/test">
+                        <Link to="/teacher/test">
                             <li className="header_navbar_nav">YAKUNIY TEST</li>
                         </Link>
                     </ul>

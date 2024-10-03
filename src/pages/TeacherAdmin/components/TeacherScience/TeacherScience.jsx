@@ -13,6 +13,7 @@ const TeacherScience = () => {
     const { scienceList, limit, offset } = useSelector((state) => state.ScienceSlice);
     const { teacher } = useSelector((state) => state.TeacherSlice);
     const { homework } = useSelector((state) => state.HomeworkSlice);
+    const { allGroups = [],  page, status, error } = useSelector((state) => state.GroupSlice  || {});
 
     const [showModal, setShowModal] = useState(false);
     const [selectedScience, setSelectedScience] = useState(null);
@@ -77,7 +78,6 @@ const TeacherScience = () => {
     const getHomeworkCount = (scienceId) => {
         return homework.filter(hw => hw.course === scienceId).length;
     };
-console.log(scienceList)
     return (
         <div className="backgroundPage">
             <div style={{ padding: "20px 60px" }}>
@@ -125,7 +125,7 @@ console.log(scienceList)
                             show={showModal}
                             handleClose={handleCloseModal}
                             teacherData={teacher || []}
-                            scienceData={scienceList || []}
+                            allGroups={allGroups || []}
                             setSelectedScience={setSelectedScience}  // Pass the function here
                         />}
                     </div>

@@ -15,7 +15,6 @@ const TeacherHomework = () => {
         dispatch(getTask({ limit, offset }));
     }, [limit, offset, dispatch]);
 
-    // Filter homework based on the selected science ID
     const filteredHomework = homework.filter(hw => hw.course === scienceId);
 
     return (
@@ -44,8 +43,9 @@ const TeacherHomework = () => {
                             <tbody>
                             {filteredHomework.map(hw => (
                                 <tr key={hw.id}>
+
                                     <td className="tabless_items">{scienceName}</td>
-                                    <td className="tabless_items">{group}</td>
+                                    <td className="tabless_items">{group.name}</td>
                                     <td className="tabless_items">{training}</td>
                                     <td className="tabless_items">
                                         <a href={hw.file}>Download</a>

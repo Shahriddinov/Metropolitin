@@ -3,7 +3,7 @@ import "./science.scss";
 import { Link } from "react-router-dom";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
-import { getScience } from "../../redux/ScienceSlice";
+import {getAllScience, getScience} from "../../redux/ScienceSlice";
 import { getTeachers } from "../../redux/TeacherSlice";
 import { setPage } from "../../redux/LibrarySlice/librarySlice";
 
@@ -23,7 +23,7 @@ const Science = () => {
 
     useEffect(() => {
         dispatch(getTeachers());
-        dispatch(getScience({ limit, offset }));
+        dispatch(getAllScience({ limit, offset }));
     }, [limit, offset, dispatch]);
 
     // Extract unique study periods from teacherData
@@ -49,7 +49,6 @@ const Science = () => {
         const teacher = teacherData.find((teacher) => teacher.id === teacherId);
         return teacher ? teacher.fullname : 'Unknown';
     };
-
     return (
         <div className="backgroundPage">
             <div style={{ padding: " 20px 60px" }}>

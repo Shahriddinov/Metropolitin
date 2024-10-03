@@ -1,0 +1,18 @@
+@import "assets/styles/ui";
+.result{
+  &_head{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 400;
+    color: #8D8484;
+    &_homes{
+      border: 1px solid black;
+      background: white;
+      padding: 5px 12px;
+      position: relative;
+    }
+  }
+}
