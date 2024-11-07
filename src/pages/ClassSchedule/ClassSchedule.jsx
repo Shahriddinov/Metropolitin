@@ -22,7 +22,7 @@ const ClassSchedule = () => {
     const dispatch = useDispatch();
     const { schedules } = useSelector((state) => state.ScheduleSlice);
     const [filteredSchedule, setFilteredSchedule] = useState([]);
-    const loggedInGroupId = localStorage.getItem('groupID');
+    const loggedInGroupId = sessionStorage.getItem('groupID');
 
     useEffect(() => {
         dispatch(getScheduleAll());

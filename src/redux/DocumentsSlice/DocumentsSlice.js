@@ -5,9 +5,8 @@ import { addDocuments, deleteDocument,getDocument, updateDocument } from './inde
 const initialState = {
     documents: [], // Combined documents list
     postDocuments: null, // Holds the last added document
-    limit: 2, // Pagination limit
-    offset: 0, // Pagination offset
-    page: 1, // Current page
+    offset: 0,             // Pagination offset (starts at 0)
+    totalCount: 0,         // Total count of students
     status: 'idle', // Status for getDocument
     loading: false, // Loading state for add, delete, update actions
     error: null, // Error message
@@ -17,18 +16,7 @@ const initialState = {
 const documentSlice = createSlice({
     name: 'GetDocument',
     initialState,
-    reducers: {
-        setLimit: (state, action) => {
-            state.limit = action.payload;
-        },
-        setOffset: (state, action) => {
-            state.offset = action.payload;
-        },
-        setPage: (state, action) => {
-            state.page = action.payload;
-            state.offset = (action.payload - 1) * state.limit;
-        },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         // Handling getDocument actions
         builder
@@ -38,6 +26,7 @@ const documentSlice = createSlice({
             .addCase(getDocument.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.documents = action.payload.results;
+                state.totalCount = action.payload.totalCount;
             })
             .addCase(getDocument.rejected, (state, action) => {
                 state.status = 'failed';
@@ -92,6 +81,6 @@ const documentSlice = createSlice({
     },
 });
 
-export const { setLimit, setOffset, setPage } = documentSlice.actions;
+export const { setPage } = documentSlice.actions;
 
 export default documentSlice.reducer;

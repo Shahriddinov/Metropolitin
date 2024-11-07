@@ -6,10 +6,11 @@ import placeholderImage from '../../assets/images/file.png'; // Adjust the path 
 import {ADD_TASK, GET_TASK} from "../../services/api/utilis";
 export const addTask = createAsyncThunk(
     'addTask',
-    async ({ finished_date, type, file, course, teacher, description }) => {
+    async ({ finished_date, type, file, course, teacher, group, description }) => {
         const formData = new FormData();
         formData.append('finished_date', finished_date);
         formData.append('course', course);
+        formData.append('group', group);
         formData.append('teacher', teacher);
         formData.append('file', file);
         formData.append('description', description);
@@ -28,8 +29,8 @@ export const addTask = createAsyncThunk(
 export const getTask = createAsyncThunk('getTask', async (params, thunkAPI) => {
     try {
 
-        const { limit, offset } = params;
-        const response = await axios.get(`${GET_TASK}?limit=${limit}}&offset=${offset}`, {
+
+        const response = await axios.get(`${GET_TASK}`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',

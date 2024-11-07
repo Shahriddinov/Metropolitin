@@ -21,7 +21,7 @@ export const addStudent = createAsyncThunk(
 
 export const updateStudent = createAsyncThunk(
     'student/updateStudent',
-    async ({ id, payload }, { rejectWithValue }) => {
+    async ({id, payload}, {rejectWithValue}) => {
         try {
             const response = await axios.patch(`${POST_STUDENT}${id}/`, payload, {
                 headers: {
@@ -36,10 +36,10 @@ export const updateStudent = createAsyncThunk(
         }
     }
 );
-export const getStudent = createAsyncThunk('students/allStudent', async (params, thunkAPI) => {
+export const getOneStudent = createAsyncThunk('students/allStudent', async (params, thunkAPI) => {
     try {
-
-        const response = await axios.get(`${GET_STUDENT_LIST}`, {
+        const {id} = params
+        const response = await axios.get(`${POST_STUDENT}${id}/`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
@@ -51,6 +51,23 @@ export const getStudent = createAsyncThunk('students/allStudent', async (params,
         return thunkAPI.rejectWithValue(error.message);
     }
 });
+export const getOfferStudent = createAsyncThunk('students/allOfferStudent', async (params, thunkAPI) => {
+    try {
+        const {limit, offset, fullname} = params;
+        const response = await axios.get(`${GET_STUDENT_LIST}?limit=${limit}&offset=${offset}&fullname=${fullname || ''}`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+        });
+
+        return response.data;
+
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.message);
+    }
+});
+
 
 export const deleteStudent = createAsyncThunk(
     'students/delete',

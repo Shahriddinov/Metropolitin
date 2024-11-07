@@ -1,0 +1,52 @@
+.pagination {
+  margin: 20px 0;
+
+  .custom-pagination {
+    display: flex;
+    align-items: center;
+
+    button {
+      margin: 0 5px;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      background-color: #f0f0f0; // Default button background
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+
+      &.active {
+        background-color: #1976d2; // Active page color
+        color: white;
+      }
+
+      &:hover:not(.active) {
+        background-color: #ddd; // Hover effect for non-active pages
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5; // Disabled state
+      }
+    }
+  }
+
+  .prev-button,
+  .next-button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff; // Button color for Prev and Next
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #0056b3; // Hover effect for Prev and Next buttons
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      background-color: #6c757d; // Disabled button color
+    }
+  }
+}

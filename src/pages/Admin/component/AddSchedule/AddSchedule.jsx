@@ -17,27 +17,39 @@ import { getAllScience } from "../../../../redux/ScienceSlice";
 import { getTeachers } from "../../../../redux/TeacherSlice";
 import { getAllGroups } from "../../../../redux/GroupSlice";
 import {setPage} from "../../../../redux/LibrarySlice/librarySlice";
+import {useLocation, useNavigate} from "react-router-dom";
+import PaginationComponent from "../../../../components/Pagination/Pagination";
 
 const AddSchedule = () => {
+    const location = useLocation();
+    const navigate = useNavigate()
     const dispatch = useDispatch();
     const [editMode, setEditMode] = useState(false);
     const [selectedScheduleId, setSelectedScheduleId] = useState(null);
-
+    const limit = 20;
+    const currentPage = 1;
     const {
         schedules,
         loading,
         status,
-        error,
-        limit,
-        offset,
-        page,
+        totalCount,
         postSchedule,
     } = useSelector((state) => state.ScheduleSlice); // Accessing the combined schedule state
-    const { teachers } = useSelector((state) => state.TeacherSlice);
+    const { teachersAll } = useSelector((state) => state.TeacherSlice);
     const { allGroups } = useSelector((state) => state.GroupSlice);
     const { scienceList } = useSelector((state) => state.ScienceSlice);
 
     const [showModal, setShowModal] = useState(false);
+    const getQueryParams = () => {
+        const params = new URLSearchParams(location.search);
+        const page = parseInt(params.get('page')) || 1; // Default to page 1 if not specified
+        const search = params.get('search') || '';
+        return { page, search };
+    };
+
+    const { page, search } = getQueryParams();
+    const offset = (page - 1) * limit; // Calculate offset for pagination
+
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
 
@@ -50,9 +62,8 @@ const AddSchedule = () => {
         course: '',
         teacher: ''
     });
-
     useEffect(() => {
-        dispatch(getScheduleAll({ limit, offset }));
+        dispatch(getSchedule({ limit, offset }));
         dispatch(getAllScience());
         dispatch(getTeachers());
         dispatch(getAllGroups());
@@ -88,7 +99,7 @@ const AddSchedule = () => {
             } else if (action.meta.requestStatus === 'rejected') {
                 toast.error("Error occurred while deleting the schedule.");
             }
-            dispatch(getScheduleAll({ limit, offset }));
+            dispatch(getSchedule({ page: currentPage, limit: 20 }));
         });
     };
 
@@ -98,7 +109,7 @@ const AddSchedule = () => {
             dispatch(updateSchedule({ id: selectedScheduleId, payload: formData })).then((action) => {
                 if (action.meta.requestStatus === 'fulfilled') {
                     toast.success("Jadval muvaffaqiyatli yangilandi!");
-                    dispatch(getScheduleAll({ limit, offset })); // Fetch the updated schedule
+                    dispatch(getSchedule({ page: currentPage, limit: 20})); // Fetch the updated schedule
                 } else {
                     toast.error("Xatolik yuz berdi, jadval yangilanmadi.");
                 }
@@ -107,7 +118,7 @@ const AddSchedule = () => {
             dispatch(addSchedule(formData)).then((action) => {
                 if (action.meta.requestStatus === 'fulfilled') {
                     toast.success("Dars jadvali muvaffaqiyatli qo'shildi!");
-                    dispatch(getScheduleAll({ limit, offset })); // Fetch the updated schedule
+                    dispatch(getSchedule({page: currentPage, limit: 20 })); // Fetch the updated schedule
                 } else {
                     toast.error("Xatolik yuz berdi, Dars jadvali qo'shilmadi.");
                 }
@@ -127,8 +138,8 @@ const AddSchedule = () => {
     };
 
 
-    const handlePageChange = (newPage) => {
-        dispatch(setPage(newPage));
+    const handlePageClick = (pageNumber) => {
+        navigate(`?page=${pageNumber}`);
     };
 
     return (
@@ -141,7 +152,7 @@ const AddSchedule = () => {
                     handleSubmit={handleSubmit}
                     handleChange={handleChange}
                     formData={formData}
-                    teacherData={teachers || []}
+                    teacherData={teachersAll || []}
                     groupsData={allGroups || []}
                     scienceData={scienceList || []}
                 />
@@ -151,24 +162,18 @@ const AddSchedule = () => {
                         handleDelete={handleDelete}
                         handleEdit={handleEdit}
                         data={schedules || []}
+                        page={page}
+                        currentPage={currentPage}
+                        limit={limit}
                     />
                 )}
-                {status === 'failed' && <p>{error}</p>}
+                
                 <div className="pagination-container">
-                    <button
-                        className="pagination-button"
-                        disabled={page === 1}
-                        onClick={() => handlePageChange(page - 1)}
-                    >
-                        Previous
-                    </button>
-                    <span className="pagination-page">Page {page}</span>
-                    <button
-                        className="pagination-button"
-                        onClick={() => handlePageChange(page + 1)}
-                    >
-                        Next
-                    </button>
+                    <PaginationComponent
+                        count={Math.ceil(totalCount / limit) } // Calculate total pages
+                        currentPage={page} // Current page from query params
+                        onPageChange={handlePageClick}
+                    />
                 </div>
             </div>
             <ToastContainer />

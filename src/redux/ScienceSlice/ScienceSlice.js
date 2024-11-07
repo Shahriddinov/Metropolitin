@@ -15,26 +15,15 @@ const initialState = {
     loading: false,           // General loading state
     status: 'idle',           // General status state
     error: null,              // General error state
-    limit: 2,                 // Pagination limit for getScience
-    offset: 0,                // Pagination offset for getScience
-    page: 1,                  // Pagination page for getScience
+
+    offset: 0,             // Pagination offset (starts at 0)
+    totalCount: 0,         // Total count of students                    // Pagination page for getScience
 };
 
 const scienceSlice = createSlice({
     name: 'science',
     initialState,
-    reducers: {
-        setLimit: (state, action) => {
-            state.limit = action.payload;
-        },
-        setOffset: (state, action) => {
-            state.offset = action.payload;
-        },
-        setPage: (state, action) => {
-            state.page = action.payload;
-            state.offset = (action.payload - 1) * state.limit;
-        },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             // Add Science
@@ -76,13 +65,14 @@ const scienceSlice = createSlice({
                 state.error = action.error.message || 'Failed to fetch sciences';
             })
 
-            // Get Science
+            // Get offer Science
             .addCase(getScience.pending, (state) => {
                 state.status = 'loading';
             })
             .addCase(getScience.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                state.data = action.payload;
+                state.scienceList = action.payload.results;
+                state.totalCount = action.payload.totalCount;
             })
             .addCase(getScience.rejected, (state, action) => {
                 state.status = 'failed';
@@ -104,6 +94,6 @@ const scienceSlice = createSlice({
     },
 });
 
-export const { setLimit, setOffset, setPage } = scienceSlice.actions;
+export const { setPage } = scienceSlice.actions;
 
 export default scienceSlice.reducer;

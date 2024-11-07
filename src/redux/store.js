@@ -10,6 +10,8 @@ import ScheduleSlice from "./ScheduleSlice/ScheduleSlice";
 import HomeworkSlice from "./HomeworkSlice/HomeworkSlice";
 import quizCreateSlice from "./QuizCreateSlice/quizCreateSlice";
 import QuizQuestionSlice from "./QuizQuestionSlice/quizQuestionSlice";
+import studentSolutionTestSlice from "./StudentTestSolution/studentTestSolution";
+import paginationSlice from "./PaginationSlice/PaginationSlice";
 const store = configureStore({
     reducer: {
         StudentSlice,
@@ -23,6 +25,8 @@ const store = configureStore({
         HomeworkSlice,
         quizCreateSlice,
         QuizQuestionSlice,
+        studentSolutionTestSlice,
+        paginationSlice
 
     },
     middleware: (getDefaultMiddleware) =>

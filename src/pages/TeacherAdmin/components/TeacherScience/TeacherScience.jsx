@@ -17,11 +17,12 @@ const TeacherScience = () => {
 
     const [showModal, setShowModal] = useState(false);
     const [selectedScience, setSelectedScience] = useState(null);
+    const [selectedGroup, setSelectedGroup] = useState(null);
     const [formData, setFormData] = useState({
         finished_date: "",
         group: "",
         course: "",
-        teacher: parseInt(localStorage.getItem('userID')),
+        teacher: parseInt(sessionStorage.getItem('userID')),
         file: null,
         description: ""
     });
@@ -30,7 +31,7 @@ const TeacherScience = () => {
         dispatch(getAllGroups());
         dispatch(getAllScience());
         dispatch(getScience({ limit, offset }));
-        dispatch(getTask({ limit, offset })); // Fetch homework data
+        dispatch(getTask()); // Fetch homework data
     }, [limit, offset, dispatch]);
 
     const handleChange = (e) => {
@@ -48,8 +49,9 @@ const TeacherScience = () => {
         });
     };
 
-    const handleShowModal = (science) => {
+    const handleShowModal = (science, group) => {
         setSelectedScience(science);
+        setSelectedGroup(group)
         setShowModal(true);
     };
 
@@ -58,16 +60,18 @@ const TeacherScience = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(addTask(formData)).then((result) => {
-            if (result.meta.requestStatus === 'fulfilled') {
-                navigate("/teacher/homework", { state: { selectedScience } });
-                dispatch(getTask())
-            }
+            // if (result.meta.requestStatus === 'fulfilled') {
+            //     navigate("/teacher/homework", { state: { selectedScience } });
+
+            // }
         });
+        dispatch(getTask())
+
         setFormData({
             finished_date: "",
             group: "",
             course: "",
-            teacher: parseInt(localStorage.getItem('userID')),
+            teacher: parseInt(sessionStorage.getItem('userID')),
             file: null,
             description: ""
         });
@@ -126,6 +130,8 @@ const TeacherScience = () => {
                             handleClose={handleCloseModal}
                             teacherData={teacher || []}
                             allGroups={allGroups || []}
+                            scienceList={scienceList || []}
+                            setSelectedGroup={setSelectedGroup}
                             setSelectedScience={setSelectedScience}  // Pass the function here
                         />}
                     </div>

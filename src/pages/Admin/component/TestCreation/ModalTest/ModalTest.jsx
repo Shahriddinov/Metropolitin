@@ -1,7 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './modalTest.scss';
+import {Button} from "antd";
 
 const ModalTest = ({ show, handleClose, handleSubmit, handleChange, formData, scienceData, allGroups }) => {
+    const [size, setSize] = useState('large'); // default is 'middle'
+
     if (!show) {
         return null;
     }
@@ -9,7 +12,10 @@ const ModalTest = ({ show, handleClose, handleSubmit, handleChange, formData, sc
     return (
         <div className="modal-overlay">
             <div className="modal-content">
-                <button className="close-button" onClick={handleClose}>&times;</button>
+                <div className="modal-header" style={{marginBottom:"20px"}}>
+                    <h2>Test qo'shish</h2>
+                    <button className="close-button" onClick={handleClose}>&times;</button>
+                </div>
                 <form className="settings-form" onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label>Test nomi:</label>
@@ -67,13 +73,15 @@ const ModalTest = ({ show, handleClose, handleSubmit, handleChange, formData, sc
                     </div>
 
                     <div className="form-group">
-                        <label>Test davomiyligi (daqiqalarda):</label>
+                        <label htmlFor="duration">Test davomiyligi (daqiqalarda):</label>
                         <input
                             type="number"
+                            id="duration"
                             name="duration"
                             placeholder="0"
                             value={formData.duration}
                             onChange={handleChange}
+                            min="1"  // Minimal qiymat 1 minut
                         />
                     </div>
 
@@ -109,7 +117,7 @@ const ModalTest = ({ show, handleClose, handleSubmit, handleChange, formData, sc
                         />
                     </div>
 
-                    <button type="submit" className="save-button">Saqlash</button>
+                    <Button type="submit"  size={size} className="save-button">Saqlash</Button>
                 </form>
             </div>
         </div>

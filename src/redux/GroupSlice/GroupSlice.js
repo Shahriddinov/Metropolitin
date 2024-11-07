@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { addGroups, deleteGroup, getAllGroups, updateGroup } from './index'; // Ensure all these imports are correctly pointing to your thunks
+import { addGroups, deleteGroup, getAllGroups, updateGroup, getGroup } from './index'; // Ensure all these imports are correctly pointing to your thunks
 
 // Initial state for the combined group slice
 const initialState = {
@@ -10,6 +10,8 @@ const initialState = {
     updateGroup: null, // For updating a group
     status: 'idle',  // For managing the global status
     deleteStatus: 'idle', // Separate status for delete operations if needed
+    offset: 0,             // Pagination offset (starts at 0)
+    totalCount: 0,
 };
 
 // Create a single combined slice
@@ -61,6 +63,23 @@ const groupSlice = createSlice({
             .addCase(getAllGroups.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.payload;
+            })
+
+        //get offer group
+        builder
+            .addCase(getGroup.pending, (state) => {
+                state.status = 'loading';
+                state.error = null;
+            })
+            .addCase(getGroup.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.allGroups = action.payload.results; // Make sure this matches your API response
+                state.totalCount = action.payload.totalCount; // Total number of students
+
+            })
+            .addCase(getGroup.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload;
             });
 
         // Handling updateGroup actions
@@ -84,5 +103,6 @@ const groupSlice = createSlice({
             });
     },
 });
+export const { setPage } = groupSlice.actions;
 
 export default groupSlice.reducer;

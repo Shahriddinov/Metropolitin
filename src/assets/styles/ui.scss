@@ -182,7 +182,9 @@ $color-layout:#011F2D;
         }
     }
 }
-
+.addStudent{
+    padding: 16px;
+}
 .addTeacher{
     padding: 20px;
 }
@@ -221,31 +223,37 @@ $color-layout:#011F2D;
 
 /* Add these styles in your CSS file */
 
-.pagination-container {
+.pagination {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 20px;
-}
+    gap: 10px;
 
-.pagination-button {
-    margin: 0 10px;
-    padding: 10px 20px;
-    cursor: pointer;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
+    .pagination-btn {
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+        font-size: 14px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, color 0.3s ease;
 
-.pagination-button:hover {
-    background-color: #0056b3;
-}
+        &:hover {
+            background-color: #007bff;
+            color: white;
+        }
 
-.pagination-page {
-    margin: 0 10px;
-    font-size: 18px;
+        &.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        &:disabled {
+            background-color: #e0e0e0;
+            cursor: not-allowed;
+        }
+    }
 }
 
 .table_container {

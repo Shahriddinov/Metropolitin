@@ -1,17 +1,16 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 
 // Assuming you have these thunks defined somewhere
-import { addLibrary, deleteLibrary, updateLibrary,  getLibraryAll } from './index';
+import {addLibrary, deleteLibrary, updateLibrary, getLibraryAll, getOfferLibraryAll} from './index';
 
 // Initial State
 const initialState = {
     libraryItems: [],
     library: null,
     updateLibrary: null,
-    limit: 30,
-    offset: 0,
-    page: 1,
+    offset: 0,             // Pagination offset (starts at 0)
+    totalCount: 0,         // Total count of students
     status: 'idle',
     loading: false,
     error: null,
@@ -22,20 +21,14 @@ const librarySlice = createSlice({
     name: 'library',
     initialState,
     reducers: {
-        setLimit: (state, action) => {
-            state.limit = action.payload;
-        },
-        setOffset: (state, action) => {
-            state.offset = action.payload;
-        },
-        setPage: (state, action) => {
-            state.page = action.payload;
-            state.offset = (action.payload - 1) * state.limit;
+        setLibrary: (state, action) => {
+            state.students = action.payload.students; // Assuming your response has students
+            state.totalCount = action.payload.totalCount; // Ensure you set totalCount here
         },
     },
     extraReducers: (builder) => {
         builder
-            // Add Library Cases
+            // Add TeacherLibrary Cases
             .addCase(addLibrary.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -51,7 +44,7 @@ const librarySlice = createSlice({
                 state.status = 'failed';
             })
 
-            // Delete Library Cases
+            // Delete TeacherLibrary Cases
             .addCase(deleteLibrary.pending, (state) => {
                 state.status = 'loading';
             })
@@ -64,7 +57,7 @@ const librarySlice = createSlice({
                 state.error = action.payload;
             })
 
-            // Update Library Cases
+            // Update TeacherLibrary Cases
             .addCase(updateLibrary.pending, (state) => {
                 state.status = 'loading';
             })
@@ -90,11 +83,26 @@ const librarySlice = createSlice({
             .addCase(getLibraryAll.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.payload;
+            })
+            //get Offer Library
+
+            .addCase(getOfferLibraryAll.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(getOfferLibraryAll.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.libraryItems = action.payload.results;
+                state.totalCount = action.payload.totalCount;
+            })
+            .addCase(getOfferLibraryAll.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload;
             });
+
     },
 });
 
 // Export actions and reducer
-export const { setLimit, setOffset, setPage } = librarySlice.actions;
+export const {setPage} = librarySlice.actions;
 
 export default librarySlice.reducer;

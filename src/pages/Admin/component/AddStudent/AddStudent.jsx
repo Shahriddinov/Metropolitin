@@ -1,24 +1,50 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Home from '../Home/Home';
 import ModalStudent from './ModalStudent/ModalStudent';
 import TableStudent from './TableStudent/TableStudent';
-import { useDispatch, useSelector } from 'react-redux';
-import { addStudent, updateStudent, deleteStudent, getStudent } from '../../../../redux/StudentSlice';
-import { AiOutlineDelete } from 'react-icons/ai';
-import { IoMdSearch } from 'react-icons/io';
-import { toast, ToastContainer } from 'react-toastify';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+    addStudent,
+    updateStudent,
+    deleteStudent,
+    getStudent,
+    getOfferStudent,
+    setPage
+} from '../../../../redux/StudentSlice';
+import {AiOutlineDelete} from 'react-icons/ai';
+import {IoMdSearch} from 'react-icons/io';
+import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {getAllGroups} from "../../../../redux/GroupSlice";
+import ReactPaginate from 'react-paginate';
+import {useLocation, useNavigate} from "react-router-dom";
+import PaginationComponent from "../../../../components/Pagination/Pagination"; // Import ReactPaginate
 
 const AddStudent = () => {
+    const location = useLocation();
+    const navigate = useNavigate()
     const [showModal, setShowModal] = useState(false);
     const dispatch = useDispatch();
     const [searchQuery, setSearchQuery] = useState("");
     const [editMode, setEditMode] = useState(false);
     const [selectedStudentId, setSelectedStudentId] = useState(null);
-    const studentsData = useSelector((state) => state.StudentSlice.postStudent);
-    const { allGroups, status: groupsStatus, error: groupsError } = useSelector((state) => state.GroupSlice);
-    const { students, limit, offset, page, status, error } = useSelector((state) => state.StudentSlice);
+    const students = useSelector(state => state.StudentSlice.students);
+    const loading = useSelector(state => state.StudentSlice.status) === 'loading';
+    const {allGroups} = useSelector((state) => state.GroupSlice);
+    const limit = 20;
+    const currentPage = 1;
+    const totalCount = useSelector((state) => state.StudentSlice.totalCount);
+    const getQueryParams = () => {
+        const params = new URLSearchParams(location.search);
+        const page = parseInt(params.get('page')) || 1; // Default to page 1 if not specified
+        const search = params.get('search') || '';
+        return { page, search };
+    };
+
+    const { page, search } = getQueryParams();
+    const offset = (page - 1) * limit; // Calculate offset for pagination
+
+
     const [formData, setFormData] = useState({
         fullname: '',
         birthday: '',
@@ -36,9 +62,9 @@ const AddStudent = () => {
     });
 
     useEffect(() => {
-        dispatch(getStudent({ limit, offset, page, fullname: searchQuery }));
+        dispatch(getOfferStudent({limit, offset, fullname: search}));
         dispatch(getAllGroups());
-    }, [limit, offset, dispatch, page, searchQuery]);
+    }, [dispatch, limit,offset,  searchQuery]);
 
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
@@ -53,7 +79,7 @@ const AddStudent = () => {
             passport: student.user.passport,
             jshshr: student.user.jshshr,
             adress: student.adress,
-            group: student.group.id, // Ensure this is a string representing the ID
+            group: student.group.id,
             expertise: student.expertise,
             place_of_birth: student.place_of_birth,
             work_place: student.work_place,
@@ -68,10 +94,10 @@ const AddStudent = () => {
         dispatch(deleteStudent(studentId)).then((action) => {
             if (action.meta.requestStatus === 'fulfilled') {
                 toast.success("Student successfully deleted!");
-            } else if (action.meta.requestStatus === 'rejected') {
+                dispatch(getOfferStudent({page: currentPage, limit: 20, fullname: searchQuery})); // Refresh the student list
+            } else {
                 toast.error("Error occurred while deleting the student.");
             }
-            dispatch(getStudent({ limit, offset, fullname: searchQuery }));
         });
     };
 
@@ -80,7 +106,7 @@ const AddStudent = () => {
     };
 
     const handleChange = (e) => {
-        const { name, value, files } = e.target;
+        const {name, value, files} = e.target;
         let formattedValue = value;
 
         if (name === 'passport') {
@@ -118,16 +144,16 @@ const AddStudent = () => {
         try {
             let resultAction;
             if (editMode) {
-                resultAction = await dispatch(updateStudent({ id: selectedStudentId, payload: formDataToSend }));
+                resultAction = await dispatch(updateStudent({id: selectedStudentId, payload: formDataToSend}));
             } else {
                 resultAction = await dispatch(addStudent(formDataToSend));
             }
 
             if (resultAction.type.endsWith('fulfilled')) {
                 toast.success(editMode ? "O'quvchi muvaffaqiyatli yangilandi!" : "O'quvchi muvaffaqiyatli qo'shildi!");
-                dispatch(getStudent({ limit, offset, fullname: searchQuery }));
+                dispatch(getOfferStudent({page: currentPage, limit: 20, fullname: searchQuery}));
             } else {
-                const errorResponse = resultAction.payload; // Assuming error payload is the response from backend
+                const errorResponse = resultAction.payload;
                 if (errorResponse.errors) {
                     if (errorResponse.errors.passport) {
                         toast.error(errorResponse.errors.passport);
@@ -164,8 +190,9 @@ const AddStudent = () => {
 
 
 
-    const handlePageChange = (newPage) => {
-        // dispatch(setPage(newPage));
+
+    const handlePageClick = (pageNumber) => {
+        navigate(`?page=${pageNumber}&search=${search}`);
     };
 
     const noStudentsMessage = students.length === 0 && searchQuery ? "User mavjud emas" : null;
@@ -173,9 +200,9 @@ const AddStudent = () => {
     return (
         <Home>
             <div className="addStudent">
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                     <button className="add-teacher-btn" onClick={handleShowModal}>+ Talaba Qo'shish</button>
-                    <div className="search">
+                    <form className="search" onSubmit={(e) => e.preventDefault()}>
                         <input
                             className="search_inputS"
                             type="search"
@@ -186,9 +213,13 @@ const AddStudent = () => {
                         <IoMdSearch
                             fontSize="26px"
                             cursor="pointer"
-                            onClick={() => dispatch(getStudent({ limit, offset, fullname: searchQuery }))}
+                            onClick={() => dispatch(getOfferStudent({
+                                page: currentPage,
+                                limit: 10,
+                                fullname: searchQuery
+                            }))}
                         />
-                    </div>
+                    </form>
                 </div>
                 <ModalStudent
                     show={showModal}
@@ -198,8 +229,8 @@ const AddStudent = () => {
                     formData={formData}
                     groupsData={allGroups || []}
                 />
-                {status === 'loading' && <p>Loading...</p>}
-                {status === 'succeeded' && (
+                {loading && <p>Loading...</p>}
+                {!loading && (
                     <>
                         {noStudentsMessage ? (
                             <p>{noStudentsMessage}</p>
@@ -207,30 +238,23 @@ const AddStudent = () => {
                             <TableStudent
                                 handleStudentDelete={handleStudentDelete}
                                 handleEdit={handleEdit}
+                                page={page}
+                                currentPage={currentPage}
+                                limit={limit}
                                 data={students || []}
                             />
                         )}
                     </>
                 )}
-                {status === 'failed' && <p>{error}</p>}
                 <div className="pagination-container">
-                    <button
-                        className="pagination-button"
-                        disabled={page === 1}
-                        onClick={() => handlePageChange(page - 1)}
-                    >
-                        Previous
-                    </button>
-                    <span className="pagination-page">Page {page}</span>
-                    <button
-                        className="pagination-button"
-                        onClick={() => handlePageChange(page + 1)}
-                    >
-                        Next
-                    </button>
+                       <PaginationComponent
+                           count={Math.ceil(totalCount / limit) } // Calculate total pages
+                           currentPage={page} // Current page from query params
+                           onPageChange={handlePageClick}
+                       />
                 </div>
             </div>
-            <ToastContainer />
+            <ToastContainer/>
         </Home>
     );
 };

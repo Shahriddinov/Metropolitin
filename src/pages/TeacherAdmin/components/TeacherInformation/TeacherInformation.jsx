@@ -1,24 +1,21 @@
 import React, { useEffect } from 'react';
 import "./teacherInformation.scss";
 import { Link } from "react-router-dom";
-import Photo from "../../../../assets/images/Photos.png";
 import { useDispatch, useSelector } from "react-redux";
-import {getTeachers} from "../../../../redux/TeacherSlice";
+import {getOneTeachers} from "../../../../redux/TeacherSlice";
 import avatarIcon from "../../../../assets/images/avatar-icon.png";
 const TeacherInformation = () => {
     const dispatch = useDispatch();
-    const { teachers, limit, offset } = useSelector((state) => state.TeacherSlice);
+    const { singleTeacher } = useSelector((state) => state.TeacherSlice);
 
     useEffect(() => {
-        const userID = localStorage.getItem('userID');
+        const userID = sessionStorage.getItem('userID');
 
         if (userID) {
-            dispatch(getTeachers({ limit, offset }));
+            dispatch(getOneTeachers({id: userID }));
         }
-    }, [limit, offset, dispatch]);
+    },[ dispatch]);
 
-    const loggedInStudentId = localStorage.getItem('userID');
-    const loggedInStudent = teachers.find(teacher => teacher.id === parseInt(loggedInStudentId));
 
 
 
@@ -35,14 +32,14 @@ const TeacherInformation = () => {
                         <div className="">Shaxsiy Ma'lumotlar</div>
                         <div className="personal_infos_InfoCard">
                             <div className="personal_infos_InfoCard_Photos">
-                                {loggedInStudent && (
+
                                     <img
                                         width="100%"
                                         height="100%"
-                                        src={loggedInStudent.avatar || avatarIcon}
+                                        src={singleTeacher?.avatar || avatarIcon}
                                         alt="Photo"
                                     />
-                                )}
+
                             </div>
                             <div className="personal_infos_InfoCard_shows">
                                 <div className="personal_infos_InfoCard_shows_self">
@@ -54,16 +51,12 @@ const TeacherInformation = () => {
                                     {/*<div className="personal_infos_InfoCard_shows_self_NTitle">O'qituvchi</div>*/}
                                 </div>
                                 <div className="personal_infos_InfoCard_shows_self">
-                                    {loggedInStudent && (
-                                        <>
-                                            <div className="personal_infos_InfoCard_shows_self_NTitle">{loggedInStudent.fullname}</div>
-                                            <div className="personal_infos_InfoCard_shows_self_NTitle">{loggedInStudent.birthday}</div>
-                                            <div className="personal_infos_InfoCard_shows_self_NTitle">{loggedInStudent.gender}</div>
-                                            <div className="personal_infos_InfoCard_shows_self_NTitle">{loggedInStudent.adress}</div>
-                                            <div className="personal_infos_InfoCard_shows_self_NTitle">{loggedInStudent.expertise}</div>
+                                            <div className="personal_infos_InfoCard_shows_self_NTitle">{singleTeacher?.fullname}</div>
+                                            <div className="personal_infos_InfoCard_shows_self_NTitle">{singleTeacher?.birthday}</div>
+                                            <div className="personal_infos_InfoCard_shows_self_NTitle">{singleTeacher?.gender}</div>
+                                            <div className="personal_infos_InfoCard_shows_self_NTitle">{singleTeacher?.adress}</div>
+                                            <div className="personal_infos_InfoCard_shows_self_NTitle">{singleTeacher?.expertise}</div>
                                             {/*<div className="personal_infos_InfoCard_shows_self_NTitle">{getTeacherName(loggedInStudent.teacher)}</div>*/}
-                                        </>
-                                    )}
                                 </div>
                             </div>
                         </div>

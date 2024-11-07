@@ -21,10 +21,10 @@ const ModalScience = ({ show, handleClose, handleSubmit, handleChange, formData,
                                 <label>Fan nomi</label>
                                 <input type="text" name="name" value={formData.name} onChange={handleChange} required />
                             </div>
-                            <div className="form-group">
-                                <label>Dars sanasi</label>
-                                <input type="date" name="lesson_day" placeholder="YYYY-MM-DD" value={formData.lesson_day} onChange={handleChange} required />
-                            </div>
+                            {/*<div className="form-group">*/}
+                            {/*    <label>Dars sanasi</label>*/}
+                            {/*    <input type="date" name="lesson_day" placeholder="YYYY-MM-DD" value={formData.lesson_day} onChange={handleChange} required />*/}
+                            {/*</div>*/}
                             <div className="form-group">
                                 <label>O'quv yili</label>
                                 <input type="date" name="study_period" placeholder="YYYY-MM-DD" value={formData.study_period} onChange={handleChange} required />

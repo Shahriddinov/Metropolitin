@@ -1,35 +1,21 @@
-
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import {quizQuestionCreate, getQuestionQuiz, quizQuestionUpdate} from "./index";
+import { createSlice } from '@reduxjs/toolkit';
+import { quizQuestionCreate, getQuestionQuiz, quizQuestionUpdate, quizQuestionDelete } from "./index";
 
 const initialState = {
     loading: false,
     error: null,
     postQuestionQuiz: null,
-    questionItems:[],
-    updateQuestion:null,
-    limit: 30,
-    offset: 0,
-    page: 1,
+    questionItems: [],
+    updateQuestion: null,
+    deleteStatus: 'idle',
 };
 
 const quizQuestionCreateSlice = createSlice({
     name: 'quiz',
     initialState,
-    reducers: {
-        setLimit: (state, action) => {
-            state.limit = action.payload;
-        },
-        setOffset: (state, action) => {
-            state.offset = action.payload;
-        },
-        setPage: (state, action) => {
-            state.page = action.payload;
-            state.offset = (action.payload - 1) * state.limit;
-        },
-    },
+    reducers: {},
     extraReducers: (builder) => {
-        //post Question
+        // Post Question
         builder
             .addCase(quizQuestionCreate.pending, (state) => {
                 state.loading = true;
@@ -41,8 +27,41 @@ const quizQuestionCreateSlice = createSlice({
             .addCase(quizQuestionCreate.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
+            });
+
+        // Delete Question
+        builder
+            .addCase(quizQuestionDelete.pending, (state) => {
+                state.deleteStatus = 'loading';
             })
-        // get question
+            .addCase(quizQuestionDelete.fulfilled, (state, action) => {
+                state.deleteStatus = 'succeeded';
+                // Ensure `state.questionItems` is an array and filter the items
+                state.questionItems = Array.isArray(state.questionItems)
+                    ? state.questionItems.filter(question => question.id !== action.meta.arg)
+                    : [];
+            })
+            .addCase(quizQuestionDelete.rejected, (state, action) => {
+                state.deleteStatus = 'failed';
+                state.error = action.error.message;  // Use action.error.message
+            });
+
+        // Update Questions
+        builder
+            .addCase(quizQuestionUpdate.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(quizQuestionUpdate.fulfilled, (state, action) => {
+                state.loading = false;
+                state.updateQuestion = action.payload;
+            })
+            .addCase(quizQuestionUpdate.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            });
+
+        // Get Questions
+        builder
             .addCase(getQuestionQuiz.pending, (state) => {
                 state.loading = true;
             })
@@ -53,11 +72,8 @@ const quizQuestionCreateSlice = createSlice({
             .addCase(getQuestionQuiz.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
-            })
-
-
+            });
     },
 });
-export const { setLimit, setOffset, setPage } = quizQuestionCreateSlice.actions;
 
 export default quizQuestionCreateSlice.reducer;

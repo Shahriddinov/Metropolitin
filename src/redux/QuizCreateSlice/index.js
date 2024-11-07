@@ -15,9 +15,8 @@ export const quizCreate = createAsyncThunk(
         const quizId = response.data.id; // Assuming the ID is returned in the response under `data.id`
 
         if (quizId) {
-            localStorage.setItem('quizId', quizId); // Store the ID in localStorage
+            sessionStorage.setItem('quizId', quizId); // Store the ID in localStorage
         }
-
         return response.data;
     }
 );

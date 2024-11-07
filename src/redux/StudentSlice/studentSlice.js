@@ -1,35 +1,25 @@
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import {addStudent, deleteStudent, getStudent, updateStudent} from "./index";
-
-
+import {addStudent, deleteStudent, getOfferStudent, getOneStudent, updateStudent} from "./index";
 
 const initialState = {
-    students: [],            // For fetching all students
-    postStudent: null,       // For adding a new student
-    updateStudent: null,     // For updating a student
-    data: [],               // For fetching a single student
-    loading: false,         // General loading state
-    status: 'idle',         // General status state
-    error: null,            // General error state
-    limit: 10,              // Pagination limit
-    offset: 0,             // Pagination offset
-
+    students: [],          // For fetching all students
+    postStudent: null,     // For adding a new student
+    updateStudent: null,   // For updating a student
+    data: [],              // For fetching a single student
+    loading: false,        // General loading state
+    status: 'idle',        // General status state
+    error: null,           // General error state
+    offset: 0,             // Pagination offset (starts at 0)
+    totalCount: 0,         // Total count of students
 };
 
 const studentSlice = createSlice({
     name: 'students',
     initialState,
     reducers: {
-        setLimit: (state, action) => {
-            state.limit = action.payload;
-        },
-        setOffset: (state, action) => {
-            state.offset = action.payload;
-        },
-        setPage: (state, action) => {
-            state.page = action.payload;
-            state.offset = (action.payload - 1) * state.limit;
+        setStudents: (state, action) => {
+            state.students = action.payload.students; // Assuming your response has students
+            state.totalCount = action.payload.totalCount; // Ensure you set totalCount here
         },
     },
     extraReducers: (builder) => {
@@ -59,16 +49,29 @@ const studentSlice = createSlice({
                 state.status = 'failed';
                 state.error = action.payload;
             })
+            //get one Student
 
-            // Get Students
-            .addCase(getStudent.pending, (state) => {
+            .addCase(getOneStudent.pending, (state) => {
                 state.status = 'loading';
             })
-            .addCase(getStudent.fulfilled, (state, action) => {
+            .addCase(getOneStudent.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                state.students = action.payload.results;
+                state.students = action.payload;
             })
-            .addCase(getStudent.rejected, (state, action) => {
+            .addCase(getOneStudent.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload;
+            })
+            // Get Students with Pagination (using limit & offset)
+            .addCase(getOfferStudent.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(getOfferStudent.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.students = action.payload.results; // Update the students list with new results
+                state.totalCount = action.payload.totalCount; // Total number of students
+            })
+            .addCase(getOfferStudent.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message || 'Failed to fetch students';
             })
@@ -88,6 +91,6 @@ const studentSlice = createSlice({
     },
 });
 
-export const { setLimit, setOffset, setPage } = studentSlice.actions;
+export const { setPage } = studentSlice.actions;
 
 export default studentSlice.reducer;

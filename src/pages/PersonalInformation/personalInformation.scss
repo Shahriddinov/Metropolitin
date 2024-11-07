@@ -32,24 +32,25 @@
       align-items: end;
 
       &_Photos {
-        width: 30%;
-        height: 300px;
-        margin-top: 40px;
+        width: 32%;
+        height: 360px;
+        //margin-top: 40px;
       }
 
       &_shows {
         width: 65%;
-        height: 300px;
+        height: 380px;
         display: flex;
         background: white;
         padding: 15px;
+        margin-top: 40px;
         justify-content: center;
 
         &_self {
           width: 50%;
 
           &_NTitle {
-            margin: 30px 0;
+            margin: 40px 0;
           }
         }
       }

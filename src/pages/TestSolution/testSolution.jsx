@@ -8,7 +8,7 @@ import {getAllGroups, getGroup} from "../../redux/GroupSlice";
 
 const TestSolution = () => {
     const dispatch = useDispatch();
-    const groupID = localStorage.getItem('groupID');
+    const groupID = sessionStorage.getItem('groupID');
     const { allGroups = [], } = useSelector((state) => state.GroupSlice  || {});
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -48,7 +48,7 @@ const TestSolution = () => {
                     <div className="result">
                         <div className="result_head">
                             <div className="result_head_homes">Yakuniy Test</div>
-                            <Link style={{ textDecoration: "none", color: "#8D8484" }} to="/teacher/science">
+                            <Link style={{ textDecoration: "none", color: "#8D8484" }} to="/about">
                                 <div className="result_head_homes">Bosh saxifaga qaytish</div>
                             </Link>
                         </div>

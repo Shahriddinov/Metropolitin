@@ -10,16 +10,33 @@ import { IoMdSearch } from "react-icons/io";
 import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {getAllGroups} from "../../../../redux/GroupSlice";
+import ReactPaginate from 'react-paginate';
+import {useLocation, useNavigate} from "react-router-dom";
+import PaginationComponent from "../../../../components/Pagination/Pagination"; // Import react-paginate
 
 const AddTeacher = () => {
+    const location = useLocation();
+    const navigate = useNavigate()
     const [showModal, setShowModal] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [editMode, setEditMode] = useState(false);
     const [selectedTeacherId, setSelectedTeacherId] = useState(null);
     const dispatch = useDispatch();
-    const { teachers, limit, offset, page, status, error } = useSelector((state) => state.TeacherSlice);
+    const { teachers, status, error, totalPages } = useSelector((state) => state.TeacherSlice);
     const { allGroups } = useSelector((state) => state.GroupSlice);
+    const limit = 20;
+    const currentPage = 1;
+    const totalCount = useSelector((state) => state.TeacherSlice.totalCount);
     const [preview, setPreview] = useState(null);
+    const getQueryParams = () => {
+        const params = new URLSearchParams(location.search);
+        const page = parseInt(params.get('page')) || 1; // Default to page 1 if not specified
+        const search = params.get('search') || '';
+        return { page, search };
+    };
+    const { page, search } = getQueryParams();
+    const offset = (page - 1) * limit; // Calculate offset for pagination
+
     const [formData, setFormData] = useState({
         fullname: "",
         expertise: "",
@@ -34,7 +51,7 @@ const AddTeacher = () => {
     });
     useEffect(() => {
         dispatch(getAllGroups());
-        dispatch(getTeachers({ limit, offset, fullname: searchQuery }));
+        dispatch(getTeacher({ limit, offset, fullname: search }));
     }, [limit, offset, searchQuery, dispatch]);
 
     const handleShowModal = () => setShowModal(true);
@@ -112,8 +129,6 @@ const AddTeacher = () => {
         });
     };
 
-
-
     const handleSubmit = (e) => {
         e.preventDefault();
         const data = new FormData();
@@ -139,7 +154,6 @@ const AddTeacher = () => {
 
         }
 
-
         setFormData({
             fullname: "",
             expertise: "",
@@ -155,8 +169,8 @@ const AddTeacher = () => {
         handleCloseModal();
     };
 
-    const handlePageChange = (newPage) => {
-        dispatch(setPage(newPage));
+    const handlePageClick = (pageNumber) => {
+        navigate(`?page=${pageNumber}&search=${search}`);
     };
 
     const noTeachersMessage = teachers.length === 0 && searchQuery ? "User mavjud emas" : null;
@@ -195,29 +209,20 @@ const AddTeacher = () => {
                                 data={teachers || []}
                                 groupsData={allGroups || []}
                                 handleDelete={handleDelete}
-                                handleEdit={handleEdit}
                                 page={page}
                                 limit={limit}
+                                handleEdit={handleEdit}
                             />
                         )}
                     </>
                 )}
-                {status === 'failed' && <p>{error}</p>}
                 <div className="pagination-container">
-                    <button
-                        className="pagination-button"
-                        disabled={page === 1}
-                        onClick={() => handlePageChange(page - 1)}
-                    >
-                        Previous
-                    </button>
-                    <span className="pagination-page">Page {page}</span>
-                    <button
-                        className="pagination-button"
-                        onClick={() => handlePageChange(page + 1)}
-                    >
-                        Next
-                    </button>
+
+                    <PaginationComponent
+                        count={Math.ceil(totalCount / limit) } // Calculate total pages
+                        currentPage={page} // Current page from query params
+                        onPageChange={handlePageClick}
+                    />
                 </div>
             </div>
             <ToastContainer />

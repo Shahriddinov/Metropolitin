@@ -7,17 +7,31 @@ import Home from "../Home/Home";
 import ModalGroup from "./ModalGroup/ModalGroup";
 import TableGroup from "./TableGroup/TableGroup";
 import {addGroups, deleteGroup, getAllGroups, getGroup, updateGroup} from "../../../../redux/GroupSlice";
-import {setPage} from "../../../../redux/LibrarySlice/librarySlice"; // Adjust the import path as necessary
-// import { setPage } from "../../../../redux/StudentSlice/";
+import {setPage} from "../../../../redux/LibrarySlice/librarySlice";
+import {useLocation, useNavigate} from "react-router-dom";
+import PaginationComponent from "../../../../components/Pagination/Pagination"; // Adjust the import path as necessary
 
 
 const AddGroup = ({ data }) => {
     const dispatch = useDispatch();
+    const location = useLocation();
+    const navigate = useNavigate()
     const [showModal, setShowModal] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [selectedGroupId, setSelectedGroupId] = useState(null);
+    const limit = 20;
+    const currentPage = 1;
+    const { allGroups = [], status, error, totalCount } = useSelector((state) => state.GroupSlice  || {});
+    const getQueryParams = () => {
+        const params = new URLSearchParams(location.search);
+        const page = parseInt(params.get('page')) || 1; // Default to page 1 if not specified
+        const search = params.get('search') || '';
+        return { page, search };
+    };
 
-    const { allGroups = [], limit, offset, page, status, error } = useSelector((state) => state.GroupSlice  || {});
+    const { page, search } = getQueryParams();
+    const offset = (page - 1) * limit; // Calculate offset for pagination
+
     const [formData, setFormData] = useState({
         name: '',
         study_period: '',
@@ -25,8 +39,8 @@ const AddGroup = ({ data }) => {
     });
 
     useEffect(() => {
-        dispatch(getGroup()); // Adjusted to use the getAllGroups action
-    }, [dispatch]);
+        dispatch(getGroup({limit, offset})); // Adjusted to use the getAllGroups action
+    }, [dispatch, limit,offset,]);
 
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
@@ -46,6 +60,7 @@ const AddGroup = ({ data }) => {
         dispatch(deleteGroup(groupId)).then((action) => {
             if (action.meta.requestStatus === 'fulfilled') {
                 toast.success("Group successfully deleted!");
+                dispatch(getGroup({page: currentPage, limit: 20}))
             } else if (action.meta.requestStatus === 'rejected') {
                 toast.error("Error occurred while deleting the group.");
             }
@@ -73,7 +88,7 @@ const AddGroup = ({ data }) => {
         } else {
             dispatch(addGroups(formData)).then(() => {
                 toast.success("Group successfully added!");
-                dispatch(getAllGroups());
+                dispatch(getGroup({page: currentPage, limit: 20}));
             }).catch(() => {
                 toast.error("Error occurred while adding the group.");
             });
@@ -87,8 +102,8 @@ const AddGroup = ({ data }) => {
         handleCloseModal();
     };
 
-    const handlePageChange = (newPage) => {
-        dispatch(setPage(newPage));
+    const handlePageClick = (pageNumber) => {
+        navigate(`?page=${pageNumber}&search=${search}`);
     };
 
     return (
@@ -107,25 +122,19 @@ const AddGroup = ({ data }) => {
                     <TableGroup
                         handleDelete={handleDelete}
                         handleEdit={handleEdit}
+                        page={page}
+                        currentPage={currentPage}
+                        limit={limit}
                         data={allGroups || []} // Updated to use the allGroups array from the combined slice
                     />
                 )}
                 {status === 'failed' && <p>{error}</p>}
                 <div className="pagination-container">
-                    <button
-                        className="pagination-button"
-                        disabled={page === 1}
-                        onClick={() => handlePageChange(page - 1)}
-                    >
-                        Previous
-                    </button>
-                    <span className="pagination-page">Page {page}</span>
-                    <button
-                        className="pagination-button"
-                        onClick={() => handlePageChange(page + 1)}
-                    >
-                        Next
-                    </button>
+                    <PaginationComponent
+                        count={Math.ceil(totalCount / limit) } // Calculate total pages
+                        currentPage={page} // Current page from query params
+                        onPageChange={handlePageClick}
+                    />
                 </div>
             </div>
             <ToastContainer />

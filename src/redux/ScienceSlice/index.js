@@ -31,7 +31,7 @@ export const updateScience = createAsyncThunk(
         }
     }
 );
-export const getScience = createAsyncThunk('sciences/allScience', async (params, thunkAPI) => {
+export const getScience = createAsyncThunk('sciences/offer/allScience', async (params, thunkAPI) => {
     try {
 
         const { limit, offset } = params;

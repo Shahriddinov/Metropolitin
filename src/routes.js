@@ -21,7 +21,7 @@ const TeacherPersonal = lazy(() => import("./pages/TeacherAdmin/components/Teach
 const TeacherSchedule = lazy(() => import("./pages/TeacherAdmin/components/TeacherSchedule/TeacherSchedule"));
 const TeacherScience = lazy(() => import("./pages/TeacherAdmin/components/TeacherScience/TeacherScience"));
 const TeacherHomework = lazy(() => import("./pages/TeacherAdmin/components/TeacherHomework/TeacherHomework"));
-const TeacherTest = lazy(() => import("./pages/TeacherAdmin/components/TeacherTest/teacherTest"));
+const TeacherLibrary = lazy(() => import("./pages/TeacherAdmin/components/TeacherLibrary/TeacherLibrary"));
 const TeacherDoneTest = lazy(() => import("./pages/TeacherAdmin/components/TestDoneStudents/TestDoneStudents"));
 
 const AdminHome = lazy(() => import("./pages/Admin/component/Home/Home"));
@@ -49,7 +49,7 @@ const routes = [
 	{ path: "teacher/schedule", element: TeacherSchedule, role:'teacher' },
 	{ path: "teacher/science", element: TeacherScience, role:'teacher' },
 	{ path: "teacher/homework", element: TeacherHomework, role:'teacher' },
-	{ path: "teacher/test", element: TeacherTest, role:'teacher' },
+	{ path: "teacher/library", element: TeacherLibrary, role:'teacher' },
 	{ path: "teacher/doneStudent", element: TeacherDoneTest, role:'teacher' },
 
 	{ path: "admin/home/*", element: AdminHome, role: "admin" },

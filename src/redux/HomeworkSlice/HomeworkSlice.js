@@ -10,28 +10,12 @@ const HomeworkSlice = createSlice({
         tasks: null,
         taskLoading: false,
         taskError: null,
-
         // State for homework
         homework: [],
-        limit: 2,
-        offset: 0,
-        page: 1,
         homeworkStatus: 'idle',
         homeworkError: null,
     },
-    reducers: {
-        // Reducers for homework pagination
-        setLimit: (state, action) => {
-            state.limit = action.payload;
-        },
-        setOffset: (state, action) => {
-            state.offset = action.payload;
-        },
-        setPage: (state, action) => {
-            state.page = action.payload;
-            state.offset = (action.payload - 1) * state.limit;
-        },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         // Handlers for addTask
         builder
@@ -66,6 +50,5 @@ const HomeworkSlice = createSlice({
     },
 });
 
-export const { setLimit, setOffset, setPage } = HomeworkSlice.actions;
 
 export default HomeworkSlice.reducer;

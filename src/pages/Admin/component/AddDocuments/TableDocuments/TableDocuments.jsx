@@ -16,8 +16,7 @@ const TableDocuments = ({data, handleDelete, handleEdit}) => {
                     <th className="table_container_Ttabel_Tth">Buyruq sanasi</th>
                     <th className="table_container_Ttabel_Tth">Fayl yuklash</th>
                     <th className="table_container_Ttabel_Tth">Qisqacha mazmuni</th>
-                    <th className="table_container_Ttabel_Tth">O'zgartirish</th>
-                    <th className="table_container_Ttabel_Tth">O'chirish</th>
+                    <th className="table_container_Ttabel_Tth">O'ch/O'z</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -47,18 +46,19 @@ const TableDocuments = ({data, handleDelete, handleEdit}) => {
                         </td>
                         <td className="table_container_Ttabel_Ttd">{item.description}</td>
                         <td className="table_container_Ttabel_Ttd">
+                            <div style={{display:"flex", flexWrap:"wrap", gap:"20px"}}>
                             <AiOutlineEdit
                                 fontSize="24px"
                                 cursor="pointer"
                                 onClick={() => handleEdit(item)} // Handle edit click
                             />
-                        </td>
-                        <td className="table_container_Ttabel_Ttd">
-                            <AiOutlineDelete
-                                fontSize="24px"
-                                cursor="pointer"
-                                onClick={() => handleDelete(item.id)}
-                            />
+                                /
+                                <AiOutlineDelete
+                                    fontSize="24px"
+                                    cursor="pointer"
+                                    onClick={() => handleDelete(item.id)}
+                                />
+                            </div>
                         </td>
                     </tr>
                 ))}

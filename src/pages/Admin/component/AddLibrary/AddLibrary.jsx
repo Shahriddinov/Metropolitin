@@ -2,21 +2,42 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Home from '../Home/Home';
 import './addLibrary.scss';
-import {addLibrary, deleteLibrary,  getLibraryAll, updateLibrary} from '../../../../redux/LibrarySlice';
+import {
+    addLibrary,
+    deleteLibrary,
+    getLibraryAll,
+    getOfferLibraryAll,
+    updateLibrary
+} from '../../../../redux/LibrarySlice';
 import { Spinner } from '../../../../components';
 import ModalLibrary from "./ModalLibrary/ModalLibrary";
 import Book from "../../../../assets/images/books.png";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {setPage} from "../../../../redux/TeacherSlice/teacherSlice";
+import { useLocation, useNavigate } from "react-router-dom";
+import PaginationComponent from "../../../../components/Pagination/Pagination";
 
 const AddLibrary = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [editMode, setEditMode] = useState(false);
     const [selectedLibraryId, setSelectedLibraryId] = useState(null);
     const [showModal, setShowModal] = useState(false);
-    const { libraryItems,  status, error, limit, offset, page, } = useSelector((state) => state.LibrarySlice); // Correct state path
+    const { libraryItems, status, error } = useSelector((state) => state.LibrarySlice);
+    const limit = 20;
+    const currentPage = 1;
+    const totalCount = useSelector((state) => state.LibrarySlice.totalCount);
+
+    const getQueryParams = () => {
+        const params = new URLSearchParams(location.search);
+        const page = parseInt(params.get('page')) || 1;
+        return { page };
+    };
+
+    const { page } = getQueryParams();
+    const offset = (page - 1) * limit;
 
     const [formData, setFormData] = useState({
         name: '',
@@ -34,8 +55,10 @@ const AddLibrary = () => {
     };
 
     useEffect(() => {
-        dispatch(getLibraryAll({ limit, offset }));
-    }, [dispatch, limit, offset]);
+
+        dispatch(getOfferLibraryAll({ limit, offset }));
+    }, [dispatch, limit, offset, page]); // Make sure to include offset here
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -47,7 +70,7 @@ const AddLibrary = () => {
                 toast.success("Kitob muvaffaqiyatli qo'shildi!");
             }
 
-            dispatch(getLibraryAll());
+            dispatch(getOfferLibraryAll({page: currentPage, limit: 20, })); // Refresh the library list
             handleCloseModal();
         } catch (error) {
             toast.error(editMode ? "Xatolik yuz berdi, kitob yangilanmadi." : "Xatolik yuz berdi, kitob qo'shilmadi.");
@@ -79,10 +102,10 @@ const AddLibrary = () => {
         dispatch(deleteLibrary(libraryId)).then((action) => {
             if (action.meta.requestStatus === 'fulfilled') {
                 toast.success("Book successfully deleted!");
+                dispatch(getOfferLibraryAll({ page: currentPage, limit: 20, })); // Refresh library after deletion
             } else if (action.meta.requestStatus === 'rejected') {
                 toast.error("Error occurred while deleting the book.");
             }
-            dispatch(getLibraryAll());
         });
     };
 
@@ -97,12 +120,12 @@ const AddLibrary = () => {
         });
         handleShowModal();
     };
-    const handlePageChange = (newPage) => {
-        if (newPage > 0) {
-            dispatch(setPage(newPage));  // This will trigger the update to page and offset
-            dispatch(getLibraryAll({ limit, offset: (newPage - 1) * limit }));  // Fetch new data based on the new page
-        }
+
+    const handlePageClick = (pageNumber) => {
+        navigate(`?page=${pageNumber}`);
     };
+
+
     return (
         <Home>
             <div className="addTeacher">
@@ -138,27 +161,16 @@ const AddLibrary = () => {
                                 </div>
                             </div>
 
-                            <p>{index+1}) {file.name}</p>
-                            <a href={file.file} target="_blank" download={file.title}>Yuklab olish</a>
+                            <p>{(page - 1) * limit + index + 1}) {file.name}</p>
+                            <a href={file.file} target="_blank" rel="noopener noreferrer" download={file.title}>Yuklab olish</a>
                         </div>
                     ))}
                 </div>
                 <div className="pagination-container">
-                    <button
-                        className="pagination-button"
-                        disabled={page === 1}
-                        onClick={() => handlePageChange(page - 1)}
-                    >
-                        Previous
-                    </button>
-                    <span className="pagination-page">Page {page}</span>
-                    <button
-                        className="pagination-button"
-
-                        onClick={() => handlePageChange(page + 1)}
-                    >
-                        Next
-                    </button>
+                    <PaginationComponent
+                        count={Math.ceil(totalCount / limit)} // Calculate total pages
+                        currentPage={page} // Current page from query params
+                        onPageChange={handlePageClick} />
                 </div>
             </div>
             <ToastContainer />

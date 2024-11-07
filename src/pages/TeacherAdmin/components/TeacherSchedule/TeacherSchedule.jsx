@@ -6,15 +6,15 @@ import { getScheduleAll } from '../../../../redux/ScheduleSlice';
 
 const formatTime = (timeString) => {
     if (!timeString) return '';
-    return timeString.slice(0, 5); // Vaqtni 'HH:mm' formatiga keltirish
+    return timeString.slice(0, 5); // Format the time to 'HH:mm'
 };
 
-// Sana va hafta kunini olish
+// Get the weekday and date
 const getWeekDayAndDate = (dateString) => {
     const date = new Date(dateString);
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const dayName = daysOfWeek[date.getDay()]; // Haftaning kun nomi
-    const formattedDate = date.toLocaleDateString(); // 'DD/MM/YYYY' formatida
+    const dayName = daysOfWeek[date.getDay()]; // Get the name of the weekday
+    const formattedDate = date.toLocaleDateString(); // Format the date to 'DD/MM/YYYY'
     return { dayName, formattedDate };
 };
 
@@ -22,7 +22,8 @@ const TeacherSchedule = () => {
     const dispatch = useDispatch();
     const { schedules } = useSelector((state) => state.ScheduleSlice);
     const [filteredSchedule, setFilteredSchedule] = useState([]);
-    const loggedInUserId = localStorage.getItem('userID'); // LocalStorage'dan userID'ni olish
+    const loggedInUserId = sessionStorage.getItem('userID'); // Get the userID from localStorage
+
     useEffect(() => {
         dispatch(getScheduleAll());
     }, [dispatch]);
@@ -32,17 +33,17 @@ const TeacherSchedule = () => {
             // Filter schedules for the logged-in user
             const filtered = schedules.filter(item => item.teacher?.id === parseInt(loggedInUserId));
 
-            // Group schedules by unique day and keep only one entry per day
+            // Group schedules by unique day
             const groupedByDay = {};
             filtered.forEach(item => {
                 if (!groupedByDay[item.day]) {
-                    groupedByDay[item.day] = item;
+                    groupedByDay[item.day] = []; // Create an empty array for the day
                 }
+                groupedByDay[item.day].push(item); // Add the classes for that day
             });
 
-            // Convert grouped object back to an array
-            const finalFilteredSchedule = Object.values(groupedByDay);
-
+            // Flatten the grouped object back to an array
+            const finalFilteredSchedule = Object.values(groupedByDay).flat();
             setFilteredSchedule(finalFilteredSchedule);
         }
     }, [loggedInUserId, schedules]);
@@ -89,23 +90,30 @@ const TeacherSchedule = () => {
                                 <tr key={time}>
                                     <td className="table_container_Ttabel_Ttd">{time}</td>
                                     {daysOfWeek.map((dayName) => {
-                                        const classData = filteredSchedule.find(
+                                        // Get all classes for this day
+                                        const classesForDay = filteredSchedule.filter(
                                             (item) =>
                                                 getWeekDayAndDate(item.day).dayName === dayName &&
                                                 formatTime(item.start_time) === time
                                         );
+
                                         return (
                                             <td
                                                 className="table_container_Ttabel_Ttd"
                                                 key={dayName}
                                                 style={{
-                                                    backgroundColor: classData ? '#8DFC71' : 'transparent',
+                                                    backgroundColor: classesForDay.length > 0 ? '#8DFC71' : 'transparent',
                                                 }}
                                             >
-                                                {classData ? (
-                                                    <div>
-                                                        {classData.course?.name}
-                                                    </div>
+                                                {classesForDay.length > 0 ? (
+                                                    classesForDay.map((classData, index) => (
+                                                        <div key={index}>
+                                                            {classData.course?.name}
+                                                            {/*<div>*/}
+                                                            {/*    {formatTime(classData.start_time)} - {formatTime(classData.end_time)}*/}
+                                                            {/*</div>*/}
+                                                        </div>
+                                                    ))
                                                 ) : null}
                                             </td>
                                         );

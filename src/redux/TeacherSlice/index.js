@@ -41,6 +41,11 @@ export const getTeacher = createAsyncThunk('teachers/allStudent', async (params,
             },
         });
         return response.data;
+        const data = await response.json();
+        return {
+            students: data.students,
+            totalCount: data.totalCount, // Ensure this field exists in your API response
+        };
     } catch (error) {
         return thunkAPI.rejectWithValue(error.message);
     }
@@ -49,6 +54,20 @@ export const getTeacher = createAsyncThunk('teachers/allStudent', async (params,
 export const getTeachers = createAsyncThunk('teachers/getTeachers', async (_, thunkAPI) => {
     try {
         const response = await axios.get(GET_TEACHER_LIST, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.message);
+    }
+});
+export const getOneTeachers = createAsyncThunk('teachers/single/getTeachers', async (params, thunkAPI) => {
+    try {
+        const {id} = params
+        const response = await axios.get(`${POST_TEACHER}${id}/`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',

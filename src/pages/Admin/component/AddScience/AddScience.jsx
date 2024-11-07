@@ -10,29 +10,44 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {getAllGroups} from "../../../../redux/GroupSlice";
 import {setPage} from "../../../../redux/LibrarySlice/librarySlice";
+import {useLocation, useNavigate} from "react-router-dom";
+import PaginationComponent from "../../../../components/Pagination/Pagination";
 
 const AddScience = () => {
+    const location = useLocation();
+    const navigate = useNavigate()
     const [showModal, setShowModal] = useState(false);
     const [editMode, setEditMode] = useState(false); // To track if we are in edit mode
     const [selectedScienceId, setSelectedScienceId] = useState(null); // To store the selected science ID for updating
 
     const dispatch = useDispatch();
-    const scienceData = useSelector((state) => state.ScienceSlice.postScience);
-    const { scienceList, limit, offset, page, status, error } = useSelector((state) => state.ScienceSlice);
+    const { scienceList,  status, error } = useSelector((state) => state.ScienceSlice);
     const { teachers } = useSelector((state) => state.TeacherSlice);
     const { allGroups } = useSelector((state) => state.GroupSlice);
+    const limit = 20;
+    const currentPage = 1;
+    const totalCount = useSelector((state) => state.ScienceSlice.totalCount);
+    const getQueryParams = () => {
+        const params = new URLSearchParams(location.search);
+        const page = parseInt(params.get('page')) || 1; // Default to page 1 if not specified
+        const search = params.get('search') || '';
+        return { page, search };
+    };
+
+    const { page, search } = getQueryParams();
+    const offset = (page - 1) * limit; // Calculate offset for pagination
 
     const [formData, setFormData] = useState({
         name: "",
         study_period: "",
         training: "",
-        lesson_day: "",
+        lesson_day: '2024-10-08',
         group: '',
         teacher: ''
     });
 
     useEffect(() => {
-        dispatch(getAllScience({ limit, offset }));
+        dispatch(getScience({ limit, offset }));
         dispatch(getTeachers());
         dispatch(getAllGroups());
     }, [limit, offset, dispatch]);
@@ -45,7 +60,7 @@ const AddScience = () => {
             name: "",
             study_period: "",
             training: "",
-            lesson_day: "",
+            lesson_day: '2024-10-08',
             group: '',
             teacher: ''
         });
@@ -69,6 +84,7 @@ const AddScience = () => {
         dispatch(deleteScience(scienceId)).then((action) => {
             if (action.meta.requestStatus === 'fulfilled') {
                 toast.success("Science successfully deleted!");
+                dispatch(getScience({page: currentPage, limit: 20}))
             } else {
                 toast.error("Error occurred while deleting the science.");
             }
@@ -89,7 +105,7 @@ const AddScience = () => {
         if (editMode) {
             dispatch(updateScience({ id: selectedScienceId, payload: formData })).then(() => {
                 toast.success("Fan muvaffaqiyatli yangilandi!");
-                dispatch(getAllScience({ limit, offset }));
+                dispatch(getScience({ limit, offset }));
             })
                 .catch(() => {
                     toast.error("Xatolik yuz berdi, fan yangilanmadi.");
@@ -97,7 +113,7 @@ const AddScience = () => {
         } else {
             dispatch(addSciences(formData)).then(() => {
                 toast.success("Fan muvaffaqiyatli qo'shildi!");
-                dispatch(getAllScience({ limit, offset }));
+                dispatch(getScience({ limit, offset }));
             })
                 .catch(() => {
                     toast.error("Xatolik yuz berdi, fan qo'shilmadi.");
@@ -106,8 +122,8 @@ const AddScience = () => {
         handleCloseModal();
     };
 
-    const handlePageChange = (newPage) => {
-        dispatch(setPage(newPage));
+    const handlePageClick = (pageNumber) => {
+        navigate(`?page=${pageNumber}&search=${search}`);
     };
 
     return (
@@ -130,23 +146,17 @@ const AddScience = () => {
                     handleEdit={handleEdit} // Pass the handleEdit function to TableScience
                     teacherData={teachers || []}
                     groupsData={allGroups || []}
+                    page={page}
+                    currentPage={currentPage}
+                    limit={limit}
                 />}
                 {status === 'failed' && <p>{error}</p>}
                 <div className="pagination-container">
-                    <button
-                        className="pagination-button"
-                        disabled={page === 1}
-                        onClick={() => handlePageChange(page - 1)}
-                    >
-                        Previous
-                    </button>
-                    <span className="pagination-page">Page {page}</span>
-                    <button
-                        className="pagination-button"
-                        onClick={() => handlePageChange(page + 1)}
-                    >
-                        Next
-                    </button>
+                    <PaginationComponent
+                        count={Math.ceil(totalCount / limit) } // Calculate total pages
+                        currentPage={page} // Current page from query params
+                        onPageChange={handlePageClick}
+                    />
                 </div>
             </div>
             <ToastContainer />

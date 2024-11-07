@@ -15,26 +15,14 @@ const initialState = {
     loading: false,          // General loading state
     status: 'idle',          // General status state
     error: null,             // General error state
-    limit: 2,                // Pagination limit
-    offset: 0,               // Pagination offset
-    page: 1,                 // Pagination page
+    offset: 0,             // Pagination offset (starts at 0)
+    totalCount: 0,         // Total count of students
 };
 
 const scheduleSlice = createSlice({
     name: 'schedule',
     initialState,
-    reducers: {
-        setLimit: (state, action) => {
-            state.limit = action.payload;
-        },
-        setOffset: (state, action) => {
-            state.offset = action.payload;
-        },
-        setPage: (state, action) => {
-            state.page = action.payload;
-            state.offset = (action.payload - 1) * state.limit;
-        },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             // Add Schedule
@@ -76,13 +64,14 @@ const scheduleSlice = createSlice({
                 state.error = action.payload;
             })
 
-            // Get Single Schedule
+            // Get offer Schedule
             .addCase(getSchedule.pending, (state) => {
                 state.status = 'loading';
             })
             .addCase(getSchedule.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                state.data = action.payload;
+                state.schedules = action.payload.results;
+                state.totalCount = action.payload.totalCount; // Total number of students
             })
             .addCase(getSchedule.rejected, (state, action) => {
                 state.status = 'failed';
@@ -104,6 +93,6 @@ const scheduleSlice = createSlice({
     },
 });
 
-export const { setLimit, setOffset, setPage } = scheduleSlice.actions;
+export const { setPage } = scheduleSlice.actions;
 
 export default scheduleSlice.reducer;

@@ -1,5 +1,6 @@
 @import "../../../assets/styles/ui";
-.finalTest{
+
+.finalTest {
   &_head {
     width: 100%;
     display: flex;
@@ -16,42 +17,47 @@
       position: relative;
     }
   }
-  &_lists{
+
+  &_lists {
     width: 100%;
     margin-top: 40px;
     height: 80vh;
     overflow-y: scroll;
-   &_boxTest{
-     width: 100%;
+
+    &_boxTest {
+      width: 100%;
 
 
-     &_testTitle{
-       font-weight: 400;
-       font-size: 20px;
-       line-height: 3;
-     }
-     &_checks{
-       display: block;
+      &_testTitle {
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 3;
+      }
 
-       align-items: center;
+      &_checks {
+        display: block;
 
-       &_TestLabel{
-         font-size: 14px;
-         font-weight: 600;
-         color: #727785;
-         display: flex;
-         gap: 10px;
-         margin-top: 10px;
+        align-items: center;
 
-       }
-       &_TestInput{
-       }
+        &_TestLabel {
+          font-size: 14px;
+          font-weight: 600;
+          color: #727785;
+          display: flex;
+          gap: 10px;
+          margin-top: 10px;
 
-     }
-   }
-    &_TestButton{
+        }
+
+        &_TestInput {
+        }
+
+      }
+    }
+
+    &_TestButton {
       display: flex;
-
+      cursor: pointer;
       align-items: center;
       justify-content: center;
       margin: 0 auto;

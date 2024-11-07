@@ -1,26 +1,21 @@
-// src/components/PersonalInformation/PersonalInformation.js
-
 import React, { useEffect } from 'react';
 import "./personalInformation.scss";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getStudent } from "../../redux/StudentSlice";
+import { getOneStudent } from "../../redux/StudentSlice";
 
 import avatarIcon from "../../assets/images/avatar-icon.png"; // Path to your avatar icon image
 
 const PersonalInformation = () => {
     const dispatch = useDispatch();
-    const { students, limit, offset } = useSelector((state) => state.StudentSlice);
+    const { students } = useSelector((state) => state.StudentSlice);
 
     useEffect(() => {
-        const userID = localStorage.getItem('userID');
+        const userID = sessionStorage.getItem('userID');
         if (userID) {
-            dispatch(getStudent({ limit, offset }));
+            dispatch(getOneStudent({ id: userID }));  // Pass userID as parameter
         }
-    }, [limit, offset, dispatch]);
-
-    const loggedInStudentId = localStorage.getItem('userID');
-    const loggedInStudent = students.find(student => student.id === parseInt(loggedInStudentId));
+    }, [dispatch]);
 
     return (
         <div className="backgroundPage">
@@ -35,14 +30,14 @@ const PersonalInformation = () => {
                         <div className="">Shaxsiy Ma'lumotlar</div>
                         <div className="personal_infos_InfoCard">
                             <div className="personal_infos_InfoCard_Photos">
-                                {loggedInStudent && (
+
                                     <img
                                         width="100%"
                                         height="100%"
-                                        src={loggedInStudent.avatar || avatarIcon}
+                                        src={students?.avatar || avatarIcon}
                                         alt="Photo"
                                     />
-                                )}
+
                             </div>
                             <div className="personal_infos_InfoCard_shows">
                                 <div className="personal_infos_InfoCard_shows_self">
@@ -53,15 +48,23 @@ const PersonalInformation = () => {
                                     <div className="personal_infos_InfoCard_shows_self_NTitle">Guruhi</div>
                                 </div>
                                 <div className="personal_infos_InfoCard_shows_self">
-                                    {loggedInStudent && (
-                                        <>
-                                            <div className="personal_infos_InfoCard_shows_self_NTitle">{loggedInStudent.fullname}</div>
-                                            <div className="personal_infos_InfoCard_shows_self_NTitle">{loggedInStudent.birthday}</div>
-                                            <div className="personal_infos_InfoCard_shows_self_NTitle">{loggedInStudent.gender}</div>
-                                            <div className="personal_infos_InfoCard_shows_self_NTitle">{loggedInStudent.adress}</div>
-                                            <div className="personal_infos_InfoCard_shows_self_NTitle">{loggedInStudent.group.name}</div>
-                                        </>
-                                    )}
+                                            <div className="personal_infos_InfoCard_shows_self_NTitle">
+                                                {students.fullname}
+                                            </div>
+                                            <div className="personal_infos_InfoCard_shows_self_NTitle">
+                                                {students.birthday}
+                                            </div>
+                                            <div className="personal_infos_InfoCard_shows_self_NTitle">
+                                                {students.gender}
+                                            </div>
+                                            <div className="personal_infos_InfoCard_shows_self_NTitle">
+                                                {students.adress}
+                                            </div>
+                                            <div className="personal_infos_InfoCard_shows_self_NTitle">
+                                                {students?.group?.name}
+                                            </div>
+
+
                                 </div>
                             </div>
                         </div>

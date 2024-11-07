@@ -15,10 +15,10 @@ const authSlice = createSlice({
     },
     reducers: {
         logout: (state) => {
-            localStorage.removeItem('token');
-            localStorage.removeItem('refreshToken');
-            localStorage.removeItem('userID');
-            localStorage.removeItem('groupID');
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('refreshToken');
+            sessionStorage.removeItem('userID');
+            sessionStorage.removeItem('groupID');
             state.user = null;
             state.status = 'idle';
             state.error = null;

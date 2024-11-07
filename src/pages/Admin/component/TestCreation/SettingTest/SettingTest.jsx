@@ -66,9 +66,7 @@ const SettingTest = ({
                         ))}
                     </div>
                 </div>
-                <div className="modal-footer">
-                    <button type="submit">Saqlash</button>
-                </div>
+                    <button type="submit" className="save-button">Saqlash</button>
             </form>
         </div>
     );

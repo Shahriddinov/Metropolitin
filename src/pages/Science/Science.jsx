@@ -91,22 +91,7 @@ const Science = () => {
                         ))}
                         </tbody>
                     </table>
-                    <div className="pagination-container">
-                        <button
-                            className="pagination-button"
-                            disabled={page === 1}
-                            onClick={() => handlePageChange(page - 1)}
-                        >
-                            Previous
-                        </button>
-                        <span className="pagination-page">Page {page}</span>
-                        <button
-                            className="pagination-button"
-                            onClick={() => handlePageChange(page + 1)}
-                        >
-                            Next
-                        </button>
-                    </div>
+
                 </div>
             </div>
         </div>

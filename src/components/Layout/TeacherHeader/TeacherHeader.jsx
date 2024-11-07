@@ -1,12 +1,22 @@
 import React, {useEffect, useState} from "react";
 import Logo from "../../../assets/images/logo.png"
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useMediaQuery} from "react-responsive";
 import {IoClose, IoMenu} from "react-icons/io5";
+import {useDispatch} from "react-redux";
+import {logout} from "../../../redux/AuthSlice/AuthSlice";
+import {IoIosLogOut} from "react-icons/io";
 
 const TeacherHeader = () => {
     const [openMenu, setOpenMenu] = useState(false);
     const isMobile = useMediaQuery({maxWidth: "1150px"});
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        dispatch(logout());
+        navigate('/'); // Redirect to login page after logout
+    };
     const toggleChecked = () => {
         setOpenMenu(!openMenu);
     }
@@ -36,12 +46,21 @@ const TeacherHeader = () => {
                             <li className="header_navbar_nav">FANLAR</li>
                         </Link>
 
-                        <Link to="/teacher/test">
-                            <li className="header_navbar_nav">YAKUNIY TEST</li>
+                        <Link to="/teacher/library">
+                            <li className="header_navbar_nav">KUTUBXONA</li>
                         </Link>
+                        <IoIosLogOut
+                            style={{
+                                cursor:"pointer",
+                                fontSize:"25px",
+                                color:"red",
+                                marginTop:"10px"
+                            }}
+                            onClick={handleLogout}/>
+
                     </ul>
                     {isMobile && (
-                        <div className="header_burger" id="nav-toggle" onClick={toggleChecked}>
+                        <div className="header_burger" id="nav-toggle"  onClick={toggleChecked}>
                             <IoMenu/>
                         </div>
                     )}

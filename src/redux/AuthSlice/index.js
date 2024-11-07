@@ -7,10 +7,10 @@ export const login = createAsyncThunk('auth/login', async ({ passport, password 
         const response = await axios.post(LOGIN_URL, { passport, password });
         const { data, access, refresh } = response.data;
         if (data && data.id) {
-            localStorage.setItem('token', access);
-            localStorage.setItem('refreshToken', refresh);
-            localStorage.setItem('userID', data.id);
-            localStorage.setItem('groupID', data.group);
+            sessionStorage.setItem('token', access);
+            sessionStorage.setItem('refreshToken', refresh);
+            sessionStorage.setItem('userID', data.id);
+            sessionStorage.setItem('groupID', data.group);
             return { access, refresh, user: data };
         } else {
             throw new Error('User ID not found in response data');
